@@ -1,12 +1,14 @@
-# e_chat_app
+# E Chat App
 Chatting App
 
 ## - System Design
+
+```plaintext
 lib/
 │
 ├── core/
-│   ├── DI (Dependency Injection)  
-│   ├── Networking (Dio, Retrofit, SDK)
+│   ├── DI (Dependency Injection)
+│   ├── Networking (example: Dio, Retrofit, SDK, ...)
 │   ├── Routing
 │   ├── Helpers
 │   ├── Theming
@@ -18,8 +20,9 @@ lib/
         │   ├── models/
         │   └── repo/
         │
-        ├── logic
+        ├── logic (example: cubit/state, ...)
         │
         └── ui/
             ├── screens/
             └── widgets/
+```
