@@ -1,0 +1,23 @@
+import 'package:e_chat_app/core/routing/routes.dart';
+import 'package:e_chat_app/features/onbording/onbording_screen.dart';
+import 'package:e_chat_app/features/splash/loading/loading_screen.dart';
+import 'package:flutter/material.dart';
+
+class AppRouter { 
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case Routes.splash:
+        return MaterialPageRoute(builder: (_) => const LoadingScreen());
+      case Routes.onBoarding:
+        return MaterialPageRoute(builder: (_) => const OnBoardingScreen());
+      default:
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            body: Center(
+              child: Text('No route defined for ${settings.name}'),
+            ),
+          ),
+        );
+    }
+  }
+}
