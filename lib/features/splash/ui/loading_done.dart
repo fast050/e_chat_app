@@ -1,26 +1,26 @@
 import 'package:e_chat_app/core/helper/extenstions.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
-import 'package:e_chat_app/features/splash/loading/chat_border_with_text.dart';
+import 'package:e_chat_app/features/splash/ui/chat_border_with_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:e_chat_app/features/splash/loading/logo_with_text.dart';
+import 'package:e_chat_app/features/splash/ui/logo_with_text.dart';
 
-class LoadingScreen extends StatefulWidget {
-  const LoadingScreen({super.key});
+class LoadingDone extends StatefulWidget {
+  const LoadingDone({super.key});
 
   @override
-  State<LoadingScreen> createState() => _LoadingScreenState();
+  State<LoadingDone> createState() => _LoadingDoneState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingDoneState extends State<LoadingDone> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(Duration(seconds: 1 , milliseconds: 800), () {
         if (mounted) {
-          context.pushNamed(Routes.onBoarding);
+          context.pushReplacementNamed(Routes.onBoarding);
         }
       });
     });

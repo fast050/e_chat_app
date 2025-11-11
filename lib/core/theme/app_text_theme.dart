@@ -7,6 +7,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
     final TextStyle font18SemiBold;
     final TextStyle font18Regular;
     final TextStyle font16Medium;
+    final TextStyle font40Black;
 
     const AppTextTheme({
       required this.font26Bold,
@@ -14,6 +15,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
       required this.font18SemiBold,
       required this.font18Regular,
       required this.font16Medium,
+      required this.font40Black,
     });
 
   @override
@@ -23,6 +25,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
       TextStyle? font18SemiBold,
       TextStyle? font18Regular,
       TextStyle? font16Medium,
+      TextStyle? font40Black,
       }
   ) {
     return AppTextTheme(
@@ -30,7 +33,8 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
       font22Black: font22Black ?? this.font22Black,
       font18SemiBold: font18SemiBold ?? this.font18SemiBold,
       font18Regular: font18Regular ?? this.font18Regular,
-      font16Medium: font16Medium ?? this.font16Medium
+      font16Medium: font16Medium ?? this.font16Medium,
+      font40Black: font40Black ?? this.font40Black,
     );
   }
 
@@ -45,6 +49,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
       font18SemiBold: TextStyle.lerp(font18SemiBold, other.font18SemiBold, t)!,
       font18Regular: TextStyle.lerp(font18Regular, other.font18Regular, t)!,
       font16Medium: TextStyle.lerp(font16Medium, other.font16Medium, t)!,
+      font40Black: TextStyle.lerp(font40Black, other.font40Black, t)!,
     );
   }
 
@@ -55,6 +60,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme>{
       font18SemiBold: font18SemiBold.copyWith(color: color),
       font18Regular: font18Regular.copyWith(color: color),
       font16Medium: font16Medium.copyWith(color: color),
+      font40Black: font40Black.copyWith(color: color),
     );
   } 
 }

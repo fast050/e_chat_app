@@ -1,3 +1,4 @@
+import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,9 @@ class LogoWithText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final textTheme = Theme.of(context).extension<AppTextTheme>()!;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -22,13 +26,12 @@ class LogoWithText extends StatelessWidget {
         SizedBox(
           width: 19.5,
         ),
-        const Text(
+         Text(
           "E-Chat",
-          style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: AppColors.darkBlue
-              ),
+          style: textTheme.font40Black.copyWith(
+            fontStyle: FontStyle.italic,
+            color: AppColors.blue700
+          ),
         )
       ],
     );
