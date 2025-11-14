@@ -60,7 +60,7 @@ dependencies:
   easy_localization: ^3.0.1
 
   # splash screen
-  #flutter_native_splash: ^2.3.6
+  flutter_native_splash: ^2.3.6
 
   # responsive design
   flutter_screenutil: ^5.9.3
