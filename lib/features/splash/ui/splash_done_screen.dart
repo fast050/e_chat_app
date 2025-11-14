@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:e_chat_app/features/splash/ui/logo_with_text.dart';
 
-class LoadingDone extends StatefulWidget {
-  const LoadingDone({super.key});
+class SplashDoneScreen extends StatefulWidget {
+  const SplashDoneScreen({super.key});
 
   @override
-  State<LoadingDone> createState() => _LoadingDoneState();
+  State<SplashDoneScreen> createState() => _SplashDoneScreenState();
 }
 
-class _LoadingDoneState extends State<LoadingDone> {
+class _SplashDoneScreenState extends State<SplashDoneScreen> {
   @override
   void initState() {
     super.initState();
