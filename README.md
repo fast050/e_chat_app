@@ -20,7 +20,7 @@ lib/
         │   ├── models/
         │   └── repo/
         │
-        ├── logic (example: cubit/state, ...)
+        ├── logic/domain (example: cubit/state, ...)
         │
         └── ui/
             ├── screens/
