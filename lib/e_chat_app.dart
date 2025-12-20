@@ -2,8 +2,6 @@ import 'package:e_chat_app/core/routing/app_router.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/dark_theme.dart';
 import 'package:e_chat_app/core/theme/light_theme.dart';
-import 'package:e_chat_app/features/login/ui/stack_background_with_shape_login.dart';
-import 'package:e_chat_app/features/splash/ui/splash_done_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,7 +21,7 @@ class EChatApp extends StatelessWidget{
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: ThemeMode.system,
-          home: const SplashDoneScreen(),
+          initialRoute: Routes.splashDone,
           onGenerateRoute: AppRouter.generateRoute,
         );
       },
