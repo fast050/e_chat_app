@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  country_flags_pro:
+    dependency: "direct main"
+    description:
+      name: country_flags_pro
+      sha256: e34d38bceaa531e84ad7a49e317ab6222d3ddd8492fcff34170e4e1505757144
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   crypto:
     dependency: transitive
     description:
