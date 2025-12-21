@@ -1,31 +1,46 @@
 import 'package:e_chat_app/core/theme/colors.dart';
+import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/theme/styles.dart';
 import 'package:flutter/material.dart';
 
-final darkTheme = ThemeData(
-    primaryColor: AppColors.lightBlue500,
-    scaffoldBackgroundColor: AppColors.black,
-    textButtonTheme: TextButtonThemeData(
-        style: ButtonStyle(
-      textStyle: WidgetStatePropertyAll(
-        TextStyle(color: AppColors.lightBlue600),
-      ),
-    )),
-    filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(AppColors.lightBlue50),
-        textStyle:
-            WidgetStatePropertyAll(TextStyle(color: AppColors.lightBlue600)),
-      ),
+/// DARK THEME
+final ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: AppColors.lightBlue500,
+  scaffoldBackgroundColor: AppColors.black,
+  colorScheme: ColorScheme.dark(
+    primary: AppColors.lightBlue500,
+    onPrimary: AppColors.black,
+    secondary: AppColors.neutral900,
+    onSecondary: AppColors.lightBlue900,
+    surface: AppColors.black,
+    onSurface: AppColors.neutral100,
+    error: const Color.fromARGB(255, 198, 40, 40),
+    onError: AppColors.black,
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: ButtonStyle(
+      foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),
     ),
-    colorScheme: ColorScheme.dark(
-      primary: AppColors.lightBlue500,
-      onPrimary: AppColors.black,
-      secondary: AppColors.lightBlue200,
-      onSecondary: AppColors.lightBlue900,
-      error: const Color.fromARGB(255, 198, 40, 40),
-      onError: AppColors.black,
-      surface: AppColors.white,
-      onSurface: AppColors.black,
+  ),
+  filledButtonTheme: FilledButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: WidgetStatePropertyAll(AppColors.lightBlue50),
+      foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),
     ),
-    extensions: [appTextThemeValue.withColor(AppColors.lightBlue500)]);
+  ),
+  extensions: <ThemeExtension<dynamic>>[
+    appTextThemeValue.withColor(AppColors.lightBlue500),
+    AppSemanticColors(
+      // 5 text roles from table
+      textPrimary: AppColors.neutral50,
+      textSecondary: AppColors.neutral300,
+      textAccent: AppColors.neutral100,
+      textOnPrimary: AppColors.lightBlue500,
+      textOnSecondry: AppColors.white,
+      textPrimaryBrand: AppColors.lightBlue500,
+      inputBackground: AppColors.neutral900,
+      cardBackground: AppColors.neutral100,
+    ),
+  ],
+);

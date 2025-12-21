@@ -9,25 +9,45 @@ import 'package:google_fonts/google_fonts.dart';
   black : w900
 */
 final appTextThemeValue = AppTextTheme(
-  font26Bold: GoogleFonts.roboto(
-    fontSize: 26,
-    fontWeight: AppFontWeight.bold,
-  ),
-  font22Black: GoogleFonts.roboto(
-    fontSize: 22,
-    fontWeight: AppFontWeight.black,
-  ),
-  font18SemiBold: GoogleFonts.roboto(
-    fontSize: 18,
+  font16Medium: GoogleFonts.roboto(
+    fontSize: 16,
     fontWeight: AppFontWeight.medium,
+  ),
+  font16Bold: GoogleFonts.roboto(
+    fontSize: 16,
+    fontWeight: AppFontWeight.bold,
   ),
   font18Regular: GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: AppFontWeight.regular,
   ),
-  font16Medium: GoogleFonts.roboto(
-    fontSize: 16,
+  font18SemiBold: GoogleFonts.roboto(
+    fontSize: 18,
     fontWeight: AppFontWeight.medium,
+  ),
+  font20Regular: GoogleFonts.roboto(
+    fontSize: 20,
+    fontWeight: AppFontWeight.regular,
+  ),
+  font22Black: GoogleFonts.roboto(
+    fontSize: 22,
+    fontWeight: AppFontWeight.black,
+  ),
+  font24Regular: GoogleFonts.roboto(
+    fontSize: 24,
+    fontWeight: AppFontWeight.regular,
+  ),
+  font26Bold: GoogleFonts.roboto(
+    fontSize: 26,
+    fontWeight: AppFontWeight.bold,
+  ),
+  font32Medium: GoogleFonts.roboto(
+    fontSize: 32,
+    fontWeight: AppFontWeight.medium,
+  ),
+  font35Bold: GoogleFonts.roboto(
+    fontSize: 35,
+    fontWeight: AppFontWeight.bold,
   ),
   font40Black: GoogleFonts.roboto(
     fontSize: 40,
