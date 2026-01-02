@@ -4,8 +4,10 @@ import 'package:flutter_svg/svg.dart';
 
 class GradientArrowButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final bool isClickEnable;
 
-  const GradientArrowButton({super.key, required this.onPressed});
+  const GradientArrowButton(
+      {super.key, required this.onPressed, this.isClickEnable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +18,12 @@ class GradientArrowButton extends StatelessWidget {
         width: 60,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: AppGradients.lightBlueGradient,
+          gradient: isClickEnable
+              ? AppGradients.lightBlueGradient
+              : AppGradients.lightBlueGradient.withOpacity(.2),
         ),
         child: InkWell(
-          onTap: onPressed,
+          onTap: isClickEnable ? onPressed : null,
           customBorder: const CircleBorder(),
           splashColor: Colors.black.withValues(alpha: .15),
           highlightColor: Colors.black.withValues(alpha: .05),
