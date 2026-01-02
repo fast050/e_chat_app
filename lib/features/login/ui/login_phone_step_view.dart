@@ -1,15 +1,20 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/core/widgets/phone_number/phone_number_input.dart';
+import 'package:e_chat_app/core/widgets/gradient_arrow_button.dart';
+import 'package:e_chat_app/core/widgets/gradient_checkbox.dart';
 import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
-import 'package:e_chat_app/features/login/logic/country_code/country_code_cubit.dart';
-import 'package:e_chat_app/features/login/logic/country_code/country_code_state.dart';
+import 'package:e_chat_app/core/widgets/phone_input/widget/phone_number_input_widget.dart';
+import 'package:e_chat_app/features/login/logic/login_phone_step/login_phone_step_cubit.dart';
+import 'package:e_chat_app/features/login/logic/login_phone_step/login_phone_step_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPhoneStepView extends StatelessWidget {
-  const LoginPhoneStepView({super.key});
+  final void Function(String) onSubmitPhone;
+  final void Function() onStepViewNavigate;
+  const LoginPhoneStepView(
+      {super.key, required this.onSubmitPhone, required this.onStepViewNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,7 @@ class LoginPhoneStepView extends StatelessWidget {
           height: 54.h,
         ),
         Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 24.h),
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 34.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,7 +41,7 @@ class LoginPhoneStepView extends StatelessWidget {
                   Spacer(),
                   FilledTextButtonBlue50(
                       onPressed: () async {
-                        FocusScope.of(context).unfocus();
+                        //ToDo navigation to the Register Flow
                       },
                       text: "Register"),
                 ],
@@ -52,47 +57,58 @@ class LoginPhoneStepView extends StatelessWidget {
           ),
         ),
         SizedBox(height: 203.h),
-        Column(
-          children: [
-            Text(
-              "You will get a code via sms.",
-              style: textStyle.font20Regular
-                  .copyWith(color: colorStyleExt.textAccent),
-            ),
-            BlocBuilder<CountryCodeCubit, CountryCodeState>(
-                builder: (_, state) {
-              if (state.status == CountryStatus.loading) {
-                return const CircularProgressIndicator();
-              }
+        Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 24.h),
+          child: Column(
+            children: [
+              Text(
+                "You will get a code via sms.",
+                style: textStyle.font20Regular
+                    .copyWith(color: colorStyleExt.textAccent),
+              ),
+              PhoneNumberInputWidget(
+                onPhoneNumberValidationChange: (bool isValidPhoneNumber) {
+                  context
+                      .read<LoginPhoneStepCubit>()
+                      .onUpdatePhoneNumberValidation(isValidPhoneNumber);
+                },
+                onSubmitPhoneNumber: (String phoneNumber) {
+                  
+                  onSubmitPhone!(phoneNumber);
+                  
+                  context
+                      .read<LoginPhoneStepCubit>()
+                      .onSubmitPhoneNumber(phoneNumber);
 
-              if (state.status == CountryStatus.error) {
-                return RefreshIndicator(
-                    child: Text("Retry"),
-                    onRefresh: () async {
-                      context
-                          .read<CountryCodeCubit>()
-                          .getCountryByDialCode(state.countryCode!.dialCode);
-                    });
-              }
-
-              return Padding(
-                padding: EdgeInsetsGeometry.symmetric(horizontal: 20.w),
-                child: PhoneNumberInput(
-                    countryCode: state.countryCode!.code.toLowerCase(),
-                    dialCode: state.countryCode!.dialCode , 
-                    countryName: state.countryCode!.name,
-                    onCountryCodeChange: (countryCode) {
-                      context.read<CountryCodeCubit>().getCountryByDialCode(countryCode);
+                },
+              ),
+              SizedBox(
+                height: 24.h,
+              ),
+              Row(
+                children: [
+                  GradientCheckbox(
+                    onTap: (isChecked) {
+                      // ToDo Use this check value
                     },
+                    title: Text(
+                      "Remember me",
+                      style: textStyle.font16Bold
+                          .copyWith(color: colorStyleExt.textPrimary),
                     ),
-              );
-            }),
-            Checkbox(
-              value: true,
-              onChanged: (isChecked) {},
-              semanticLabel: "Remember me",
-            ),
-          ],
+                  ),
+                  Spacer(),
+                  BlocBuilder<LoginPhoneStepCubit, LoginPhoneStepState>(
+                    builder: (_, state) => GradientArrowButton(
+                      isClickEnable: state.isPhoneNumberValid,
+                      onPressed:
+                          onStepViewNavigate, // navigate internally to StepOtpView
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         )
       ],
     );
