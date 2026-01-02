@@ -1,3 +1,5 @@
+import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:e_chat_app/core/widgets/gradient_button.dart';
@@ -50,7 +52,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         duration: Duration(milliseconds: 400), curve: Curves.easeIn);
   }
 
-  void onTapSkip() {}
+  void onTapSkip() {
+    context.pushReplacementNamed(Routes.login);
+  }
 
   @override
   Widget build(BuildContext context) {

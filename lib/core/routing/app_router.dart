@@ -1,7 +1,8 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
-import 'package:e_chat_app/features/login/logic/country_code/country_code_cubit.dart';
-import 'package:e_chat_app/features/login/ui/login_phone_screen.dart';
+import 'package:e_chat_app/core/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/login/logic/login_phone_step/login_phone_step_cubit.dart';
+import 'package:e_chat_app/features/login/ui/login_screen.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
 import 'package:e_chat_app/features/splash/ui/splash_done_screen.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,10 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_)=> getIt<CountryCodeCubit>(), 
+                create: (_) => getIt<CountryCodeCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<LoginPhoneStepCubit>(),
               )
             ],
             child: const LoginScreen(),
