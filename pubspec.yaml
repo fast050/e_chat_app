@@ -68,6 +68,7 @@ dependencies:
   
   google_fonts: ^6.1.0
   country_flags_pro: ^0.1.1
+  phone_numbers_parser: ^9.0.17
 
 dev_dependencies:
   flutter_test:

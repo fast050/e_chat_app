@@ -28,7 +28,7 @@ class LocalCountriesDataSource {
     final list = await getCountriesCodes();
 
     try {
-      return list.firstWhere(
+      return list.lastWhere(
         (country) => country.code.toLowerCase() == code.toLowerCase(),
       );
     } on StateError {
@@ -40,7 +40,7 @@ class LocalCountriesDataSource {
     final list = await getCountriesCodes();
 
     try {
-      return list.firstWhere(
+      return list.lastWhere(
         (country) => country.dialCode.toLowerCase() == dialCode.toLowerCase(),
       );
     } catch (_) {

@@ -589,6 +589,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  phone_numbers_parser:
+    dependency: "direct main"
+    description:
+      name: phone_numbers_parser
+      sha256: "95fe667ce10b46c31fba50da3df4dd15272b0febd37091575e5135c087032e37"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.17"
   platform:
     dependency: transitive
     description:

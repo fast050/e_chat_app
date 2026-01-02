@@ -4,8 +4,9 @@ import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class PhoneTextField extends StatelessWidget {
-  const PhoneTextField({
+// to have the same style to the phone number input
+class PhoneNumberBaseTextField extends StatelessWidget {
+  const PhoneNumberBaseTextField({
     super.key,
     this.prefixText,
     this.controller,
@@ -20,8 +21,10 @@ class PhoneTextField extends StatelessWidget {
     this.focusNode,
     this.onTap,
     this.bottomText,
+    this.mkey
   });
 
+  final Key? mkey;
   final int? maxLen;
   final TextEditingController? controller;
   final Widget? prefixIcon;
@@ -43,6 +46,7 @@ class PhoneTextField extends StatelessWidget {
     final colorTheme = Theme.of(context).extension<AppSemanticColors>()!;
 
     return TextField(
+      key: mkey,
       focusNode: focusNode,
       readOnly: readOnly,
       onTap: onTap,
