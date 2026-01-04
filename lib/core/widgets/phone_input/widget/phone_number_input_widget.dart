@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template PhoneNumberInputWidget}
-/// 
+///
 ///  Overview:
 /// - Currently it use the Cubit with CountryCode Model to Provide Country Code data
 ///   via countries.json in this project
-///  
+///
 ///  Usage (IMPORTANT):
-/// - It need to add Bloc Provider at top level of the tree widgets in order to work   
-///    
+/// - It need to add Bloc Provider at top level of the tree widgets in order to work
+///
 ///
 ///  {@endtemplate}
 
@@ -22,9 +22,11 @@ class PhoneNumberInputWidget extends StatelessWidget {
     super.key,
     required this.onSubmitPhoneNumber,
     required this.onPhoneNumberValidationChange,
+    this.onSubmitFormatedPhoneNumber,
   });
 
   final void Function(String) onSubmitPhoneNumber;
+  final void Function(String)? onSubmitFormatedPhoneNumber;
   final void Function(bool) onPhoneNumberValidationChange;
 
   @override
@@ -57,6 +59,7 @@ class PhoneNumberInputWidget extends StatelessWidget {
         },
         onSubmitPhoneNumber: onSubmitPhoneNumber,
         onPhoneNumberValidationChange: onPhoneNumberValidationChange,
+        onSubmitFormatedPhoneNumber: onSubmitFormatedPhoneNumber,
       );
     });
   }

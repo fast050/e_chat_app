@@ -23,6 +23,7 @@ class PhoneNumberInput extends StatefulWidget {
   final void Function(String) onCountryDialCodeChange;
   final void Function(String) onCountryCodeChange;
   final void Function(String) onSubmitPhoneNumber;
+  final void Function(String)? onSubmitFormatedPhoneNumber;
   final void Function(bool) onPhoneNumberValidationChange;
 
   const PhoneNumberInput(
@@ -33,6 +34,7 @@ class PhoneNumberInput extends StatefulWidget {
       required this.onCountryDialCodeChange,
       required this.onCountryCodeChange,
       required this.onSubmitPhoneNumber,
+      this.onSubmitFormatedPhoneNumber,
       required this.onPhoneNumberValidationChange,
       this.countries});
 
@@ -96,7 +98,8 @@ class _PhoneNumberInputState extends State<PhoneNumberInput> {
           onPhoneNumberValidationChange: widget.onPhoneNumberValidationChange,
           onSubmitPhoneNumber: widget.onSubmitPhoneNumber,
           phoneNumberController: _phoneNumberController,
-          phoneNumberFocusNode: _phoneNumberFocusNode,
+          phoneNumberFocusNode: _phoneNumberFocusNode, 
+          onSubmitFormatedPhoneNumber: widget.onSubmitFormatedPhoneNumber,
         ),
       ],
     );

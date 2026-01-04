@@ -15,19 +15,20 @@ class TextFieldPhone extends StatefulWidget {
   final void Function(bool) onPhoneNumberValidationChange;
   final void Function() onPhoneNumberRemoved;
   final void Function(String) onSubmitPhoneNumber;
+  final void Function(String)? onSubmitFormatedPhoneNumber;
 
-  const TextFieldPhone(
-      {super.key,
-      required FocusNode phoneNumberFocusNode,
-      required TextEditingController phoneNumberController,
-      required this.dialCode,
-      required this.countryCode,
-      required this.onPhoneNumberValidationChange,
-      required this.isDialCodeApply,
-      required this.onPhoneNumberRemoved,
-      required this.onSubmitPhoneNumber, 
-      })
-      : _phoneNumberFocusNode = phoneNumberFocusNode,
+  const TextFieldPhone({
+    super.key,
+    required FocusNode phoneNumberFocusNode,
+    required TextEditingController phoneNumberController,
+    required this.dialCode,
+    required this.countryCode,
+    required this.onPhoneNumberValidationChange,
+    required this.isDialCodeApply,
+    required this.onPhoneNumberRemoved,
+    required this.onSubmitPhoneNumber,
+    this.onSubmitFormatedPhoneNumber,
+  })  : _phoneNumberFocusNode = phoneNumberFocusNode,
         _phoneNumberController = phoneNumberController;
 
   @override
@@ -40,7 +41,8 @@ class TextFieldPhoneState extends State<TextFieldPhone> {
   bool _isValidPhoneNumber = false;
   int maxPhoneLenght = _maxLenghtPhoneNumber;
   // at start will be 15 and then will change to limit as country
-  bool get shouldUpdateMaxPhoneLenght => _isValidPhoneNumber && widget.isDialCodeApply;
+  bool get shouldUpdateMaxPhoneLenght =>
+      _isValidPhoneNumber && widget.isDialCodeApply;
 
   /// {@template updateMaxPhoneNumberLenght}
   /// Parses a phone number given caller or destination information.
@@ -57,9 +59,8 @@ class TextFieldPhoneState extends State<TextFieldPhone> {
   }
 
   void updatePhoneNumberValidation(String phoneText) {
-     _isValidPhoneNumber = isPhoneNumberValid(phoneText);
+    _isValidPhoneNumber = isPhoneNumberValid(phoneText);
   }
-
 
   void resetMaxPhoneNumberLenght() {
     maxPhoneLenght = _maxLenghtPhoneNumber;
@@ -84,8 +85,14 @@ class TextFieldPhoneState extends State<TextFieldPhone> {
 
   String getFullPhoneNumber() {
     final dial = widget.dialCode;
-    final phone = getOnlyDigits(widget._phoneNumberController.text);
+    final phone = widget._phoneNumberController.text;
     return "$dial$phone";
+  }
+
+  String getFullFormatedPhoneNumber() {
+    final dial = widget.dialCode;
+    final phone = widget._phoneNumberController.text;
+    return "($dial) $phone";
   }
 
   void handlePhoneChange(String value) {
@@ -93,6 +100,9 @@ class TextFieldPhoneState extends State<TextFieldPhone> {
     updateMaxPhoneNumberLenght(value);
     if (value.isEmpty) widget.onPhoneNumberRemoved();
     if (_isValidPhoneNumber) widget.onSubmitPhoneNumber(getFullPhoneNumber());
+    if (_isValidPhoneNumber && widget.onSubmitFormatedPhoneNumber != null) {
+      widget.onSubmitFormatedPhoneNumber!(getFullFormatedPhoneNumber());
+    }
     submitPhoneNumberValidation();
   }
 
@@ -108,7 +118,8 @@ class TextFieldPhoneState extends State<TextFieldPhone> {
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(maxPhoneLenght),
-          PhoneNumberFormatter(dialCode: widget.dialCode, code: widget.countryCode),
+          PhoneNumberFormatter(
+              dialCode: widget.dialCode, code: widget.countryCode),
         ],
         onChange: handlePhoneChange,
       ),
