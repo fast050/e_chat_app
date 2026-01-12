@@ -42,6 +42,7 @@ final ThemeData lightTheme = ThemeData(
       textOnPrimary: AppColors.white,
       textOnSecondry: AppColors.lightBlue600,
       textPrimaryBrand: AppColors.blue500,
+      error: AppColors.red500,
       inputBackground: AppColors.neutral50,
       cardBackground: AppColors.neutral100,
     ),

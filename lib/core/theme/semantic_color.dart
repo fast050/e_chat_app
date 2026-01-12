@@ -9,6 +9,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color textOnPrimary; // white <=> light-blue-500
   final Color textOnSecondry; // Light-Blue-600 <=> White
   final Color textPrimaryBrand; // Blue-500 <=> Light-blue-500
+  final Color error; // red-500 <=> red-500
 
   // Surfaces
   final Color inputBackground; // neutral-50 <=> neutral-900
@@ -21,6 +22,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.textOnPrimary,
     required this.textOnSecondry,
     required this.textPrimaryBrand,
+    required this.error,
     required this.inputBackground,
     required this.cardBackground,
   });
@@ -33,6 +35,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? textOnPrimary,
     Color? textOnSecondry,
     Color? textPrimaryBrand,
+    Color? error,
     Color? inputBackground,
     Color? cardBackground,
   }) {
@@ -43,6 +46,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       textOnPrimary: textOnPrimary ?? this.textOnPrimary,
       textOnSecondry: textOnSecondry ?? this.textOnSecondry,
       textPrimaryBrand: textPrimaryBrand ?? this.textPrimaryBrand,
+      error: error ?? this.error,
       inputBackground: inputBackground ?? this.inputBackground,
       cardBackground: cardBackground ?? this.cardBackground,
     );
@@ -61,6 +65,7 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       textOnPrimary: _lerp(textOnPrimary, other.textOnPrimary),
       textOnSecondry: _lerp(textOnSecondry, other.textOnSecondry),
       textPrimaryBrand: _lerp(textPrimaryBrand, other.textPrimaryBrand),
+      error: _lerp(error, other.error),
       inputBackground: _lerp(inputBackground, other.inputBackground),
       cardBackground: _lerp(cardBackground, other.cardBackground),
     );

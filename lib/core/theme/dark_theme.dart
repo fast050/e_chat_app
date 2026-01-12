@@ -15,7 +15,7 @@ final ThemeData darkTheme = ThemeData(
     onSecondary: AppColors.lightBlue900,
     surface: AppColors.black,
     onSurface: AppColors.neutral100,
-    error: const Color.fromARGB(255, 198, 40, 40),
+    error: AppColors.red500,
     onError: AppColors.black,
   ),
   textButtonTheme: TextButtonThemeData(
@@ -40,7 +40,8 @@ final ThemeData darkTheme = ThemeData(
       textOnSecondry: AppColors.white,
       textPrimaryBrand: AppColors.lightBlue500,
       inputBackground: AppColors.neutral900,
-      cardBackground: AppColors.neutral100,
+      cardBackground: AppColors.neutral100, 
+      error: AppColors.red500,
     ),
   ],
 );

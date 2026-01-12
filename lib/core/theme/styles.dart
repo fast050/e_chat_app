@@ -29,6 +29,10 @@ final appTextThemeValue = AppTextTheme(
     fontSize: 20,
     fontWeight: AppFontWeight.regular,
   ),
+  font20Medium: GoogleFonts.roboto(
+    fontSize: 20,
+    fontWeight: AppFontWeight.medium
+  ),
   font22Black: GoogleFonts.roboto(
     fontSize: 22,
     fontWeight: AppFontWeight.black,
@@ -47,6 +51,10 @@ final appTextThemeValue = AppTextTheme(
   ),
   font35Bold: GoogleFonts.roboto(
     fontSize: 35,
+    fontWeight: AppFontWeight.bold,
+  ),
+   font39Bold: GoogleFonts.roboto(
+    fontSize: 39,
     fontWeight: AppFontWeight.bold,
   ),
   font40Black: GoogleFonts.roboto(
