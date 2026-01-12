@@ -1,6 +1,7 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/login/logic/login_otp_step/login_otp_step_cubit.dart';
 import 'package:e_chat_app/features/login/logic/login_phone_step/login_phone_step_cubit.dart';
 import 'package:e_chat_app/features/login/ui/login_screen.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
@@ -24,6 +25,9 @@ class AppRouter {
               ),
               BlocProvider(
                 create: (_) => getIt<LoginPhoneStepCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<LoginOTPStepCubit>(),
               )
             ],
             child: const LoginScreen(),
