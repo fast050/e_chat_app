@@ -8,6 +8,10 @@ class LoginPhoneStepCubit extends Cubit<LoginPhoneStepState> {
      emit(state.copyWith(phoneNumber: phoneNumber));
    }
 
+   void onSubmitFormatedPhoneNumber(String formatedPhoneNumber){
+     emit(state.copyWith(formatedPhoneNumber: formatedPhoneNumber));
+   }
+
    void onUpdatePhoneNumberValidation(bool isValid){
      emit(state.copyWith(isPhoneNumberValid: isValid));
    }

@@ -3,18 +3,21 @@ class LoginPhoneStepState {
   final bool isPhoneNumberValid;
 
   const LoginPhoneStepState({
-    required this.phoneNumber,
-    required this.isPhoneNumberValid,
+     this.phoneNumber,
+     required this.isPhoneNumberValid,
   });
 
   LoginPhoneStepState.initialState()
       : phoneNumber = null,
         isPhoneNumberValid = false;
 
-  LoginPhoneStepState copyWith({String? phoneNumber, bool? isPhoneNumberValid}) {
+  LoginPhoneStepState copyWith(
+      {String? phoneNumber,
+      String? formatedPhoneNumber,
+      bool? isPhoneNumberValid}) {
     return LoginPhoneStepState(
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      isPhoneNumberValid: isPhoneNumberValid ?? false,
+      isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
     );
   }
 }
