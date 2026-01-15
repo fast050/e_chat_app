@@ -1,6 +1,6 @@
 import 'package:e_chat_app/core/local/country_code_local_source/domain/entities/country_code.dart';
-import 'package:e_chat_app/core/widgets/phone_input/widget/text_field_dial_code.dart';
-import 'package:e_chat_app/core/widgets/phone_input/widget/text_field_phone.dart';
+import 'package:e_chat_app/features/auth/widgets/phone_input/widget/text_field_dial_code.dart';
+import 'package:e_chat_app/features/auth/widgets/phone_input/widget/text_field_phone.dart';
 import 'package:flutter/material.dart';
 
 /// {@template PhoneNumberInput}

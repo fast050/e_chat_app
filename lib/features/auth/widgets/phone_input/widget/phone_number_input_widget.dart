@@ -1,6 +1,6 @@
-import 'package:e_chat_app/core/widgets/phone_input/logic/country_code_cubit.dart';
-import 'package:e_chat_app/core/widgets/phone_input/logic/country_code_state.dart';
-import 'package:e_chat_app/core/widgets/phone_input/widget/phone_number_input.dart'
+import 'package:e_chat_app/features/auth/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/auth/widgets/phone_input/logic/country_code_state.dart';
+import 'package:e_chat_app/features/auth/widgets/phone_input/widget/phone_number_input.dart'
     show PhoneNumberInput;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

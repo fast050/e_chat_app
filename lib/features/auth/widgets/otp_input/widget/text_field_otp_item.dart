@@ -10,7 +10,7 @@ class TextFieldOtpItem extends StatefulWidget {
   final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
   final void Function(String)? onChanged;
-  final bool isNotCorrectOTP;
+  final bool isVerifyOTP;
 
   const TextFieldOtpItem({
     super.key,
@@ -19,7 +19,7 @@ class TextFieldOtpItem extends StatefulWidget {
     this.onEditingComplete,
     this.onSubmitted,
     this.onChanged,
-    required this.isNotCorrectOTP,
+    required this.isVerifyOTP,
   });
 
   @override
@@ -49,12 +49,12 @@ class _TextFieldOtpItemState extends State<TextFieldOtpItem> {
     final textStyle = Theme.of(context).extension<AppTextTheme>()!;
     final colorThemeExt = Theme.of(context).extension<AppSemanticColors>()!;
 
-    final enableBorderColor = widget.isNotCorrectOTP
+    final enableBorderColor = widget.isVerifyOTP
         ? colorThemeExt.error
         : colorThemeExt.textPrimary;
 
     final focusedBorderColor =
-        widget.isNotCorrectOTP ? colorThemeExt.error : AppColors.lightBlue500;
+        widget.isVerifyOTP ? colorThemeExt.error : AppColors.lightBlue500;
 
     return TextField(
       controller: widget.controller,
