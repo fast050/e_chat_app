@@ -43,3 +43,5 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+OTP_CODE_DOCUMENTATION.md
+PROJECT_CODE_DOCUMENTATION.md

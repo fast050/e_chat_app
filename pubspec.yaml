@@ -67,6 +67,10 @@ dependencies:
   flutter_svg: ^2.2.1
   
   google_fonts: ^6.1.0
+  country_flags_pro: ^0.1.1
+  phone_numbers_parser: ^9.0.17
+  firebase_core: ^4.3.0
+  firebase_auth: ^6.1.3
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +98,7 @@ flutter:
     - assets/
     - assets/svgs/
     - assets/images/
+    - assets/countries.json
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
