@@ -9,5 +9,7 @@ abstract interface class AuthRepository {
 
   bool get isSignedIn;
 
+  bool get isNewUser;
+
   Future<void> signOut();
 }

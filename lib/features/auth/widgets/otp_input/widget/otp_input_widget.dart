@@ -1,3 +1,5 @@
+import 'package:e_chat_app/core/theme/app_text_theme.dart';
+import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_cubit.dart';
 import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
 import 'package:e_chat_app/features/auth/widgets/otp_input/widget/otp_input.dart';
@@ -17,6 +19,9 @@ class OTPInputWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textStyleEx = Theme.of(context).extension<AppTextTheme>()!;
+    final colorStyleEx = Theme.of(context).extension<AppSemanticColors>()!;
+
     return BlocBuilder<OTPInputCubit, OTPInputState>(
       builder: (context, state) {
         if (state.status == OtpStatus.verify ||
@@ -38,11 +43,9 @@ class OTPInputWidget extends StatelessWidget {
             ),
             if (state.status == OtpStatus.failed)
               Text(
-                "OTP is Not Correct",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Colors.black),
+                "Code is Invalid, Try Again",
+                style: textStyleEx.font16Medium
+                    .copyWith(color: colorStyleEx.error),
               )
           ],
         );

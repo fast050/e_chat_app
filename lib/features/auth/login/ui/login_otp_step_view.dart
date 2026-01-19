@@ -141,10 +141,13 @@ class _LoginOTPStepViewState extends State<LoginOTPStepView> {
                   SizedBox(
                     height: 24.h,
                   ),
-                  BlocBuilder<LoginOTPStepCubit, LoginOTPStepState>(
-                    builder: (context, state) => GradientArrowButton(
-                      onPressed: () {},
-                      isClickEnable: state.isValidOTP,
+                  Align(
+                    alignment: AlignmentGeometry.centerRight,
+                    child: BlocBuilder<LoginOTPStepCubit, LoginOTPStepState>(
+                      builder: (context, state) => GradientArrowButton(
+                        onPressed: () {},
+                        isClickEnable: state.isValidOTP,
+                      ),
                     ),
                   )
                 ],
@@ -162,6 +165,7 @@ class _LoginOTPStepViewState extends State<LoginOTPStepView> {
               );
             }
           },
+          child: const SizedBox.shrink(),
         )
       ],
     );
