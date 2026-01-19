@@ -1,6 +1,7 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
+import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +11,7 @@ class TextFieldOtpItem extends StatefulWidget {
   final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
   final void Function(String)? onChanged;
-  final bool isVerifyOTP;
+  final OtpStatus otpStatus;
 
   const TextFieldOtpItem({
     super.key,
@@ -19,7 +20,7 @@ class TextFieldOtpItem extends StatefulWidget {
     this.onEditingComplete,
     this.onSubmitted,
     this.onChanged,
-    required this.isVerifyOTP,
+    required this.otpStatus,
   });
 
   @override
@@ -49,12 +50,17 @@ class _TextFieldOtpItemState extends State<TextFieldOtpItem> {
     final textStyle = Theme.of(context).extension<AppTextTheme>()!;
     final colorThemeExt = Theme.of(context).extension<AppSemanticColors>()!;
 
-    final enableBorderColor = widget.isVerifyOTP
+    // Determine border colors based on OTP state
+    // - Initial/Sending/Received: normal color (textPrimary)
+    // - Failed: red error color
+    // - Verify/AutoVerify: success color (textPrimary)
+    final enableBorderColor = widget.otpStatus == OtpStatus.failed
         ? colorThemeExt.error
         : colorThemeExt.textPrimary;
 
-    final focusedBorderColor =
-        widget.isVerifyOTP ? colorThemeExt.error : AppColors.lightBlue500;
+    final focusedBorderColor = widget.otpStatus == OtpStatus.failed
+        ? colorThemeExt.error
+        : AppColors.lightBlue500;
 
     return TextField(
       controller: widget.controller,

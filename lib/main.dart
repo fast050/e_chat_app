@@ -8,11 +8,13 @@ import 'package:e_chat_app/core/routing/app_router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await setupAppInstances(); 
-
+  // Initialize Firebase first (lightweight)
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  
   runApp(EChatApp(appRouter: AppRouter()));
+ 
+  // Initialize DI (now non-blocking thanks to async initialization in Cubits)
+  await setupAppInstances();
 }

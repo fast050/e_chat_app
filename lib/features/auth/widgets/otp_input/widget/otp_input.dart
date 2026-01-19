@@ -1,16 +1,17 @@
+import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
 import 'package:e_chat_app/features/auth/widgets/otp_input/widget/text_field_otp_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OTPInput extends StatefulWidget {
   final void Function(String) onSubmitOTP;
-  final bool isVerifyOTP;
+  final OtpStatus status;
   final int numberOfFields;
 
   const OTPInput({
     super.key,
     required this.onSubmitOTP,
-    required this.isVerifyOTP, 
+    required this.status, 
     this.numberOfFields = 4,
   });
 
@@ -77,7 +78,7 @@ class _OTPInputState extends State<OTPInput> {
           child: TextFieldOtpItem(
             controller: controllers[i],
             focusNode: i == 0 ? focusNode : null,
-            isVerifyOTP: widget.isVerifyOTP,
+            otpStatus: widget.status,
             onChanged: handleOTPInput,
           ),
         );

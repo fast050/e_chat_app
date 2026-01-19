@@ -70,6 +70,7 @@ dependencies:
   country_flags_pro: ^0.1.1
   phone_numbers_parser: ^9.0.17
   firebase_core: ^4.3.0
+  firebase_auth: ^6.1.3
 
 dev_dependencies:
   flutter_test:
