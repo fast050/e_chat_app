@@ -1,7 +1,7 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

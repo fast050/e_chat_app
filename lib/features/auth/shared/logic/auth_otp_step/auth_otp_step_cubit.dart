@@ -1,8 +1,8 @@
-import 'package:e_chat_app/features/auth/login/logic/login_otp_step/login_otp_step_state.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginOTPStepCubit extends Cubit<LoginOTPStepState> {
-  LoginOTPStepCubit() : super(LoginOTPStepState.initialState()) {
+class AuthOTPStepCubit extends Cubit<AuthOTPStepState> {
+  AuthOTPStepCubit() : super(AuthOTPStepState.initialState()) {
     shouldRequestOTP(true); // as this screen open should request otp
   }
 

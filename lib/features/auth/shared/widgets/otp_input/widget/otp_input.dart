@@ -1,5 +1,5 @@
-import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
-import 'package:e_chat_app/features/auth/widgets/otp_input/widget/text_field_otp_item.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_state.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/widget/text_field_otp_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

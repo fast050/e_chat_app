@@ -1,5 +1,5 @@
 import 'package:e_chat_app/core/local/country_code_local_source/domain/repo/countries_code_repository.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/logic/country_code_state.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CountryCodeCubit extends Cubit<CountryCodeState> {

@@ -1,10 +1,11 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
-import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_cubit.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/logic/country_code_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_otp_step/login_otp_step_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_phone_step/login_phone_step_cubit.dart';
+import 'package:e_chat_app/features/auth/register/ui/Register_screen.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
 import 'package:e_chat_app/features/auth/login/ui/login_screen.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
 import 'package:e_chat_app/features/splash/ui/splash_done_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,10 @@ class AppRouter {
                 create: (_) => getIt<CountryCodeCubit>(),
               ),
               BlocProvider(
-                create: (_) => getIt<LoginPhoneStepCubit>(),
+                create: (_) => getIt<AuthPhoneStepCubit>(),
               ),
               BlocProvider(
-                create: (_) => getIt<LoginOTPStepCubit>(),
+                create: (_) => getIt<AuthOTPStepCubit>(),
               ),
               BlocProvider(
                 create: (_) => getIt<OTPInputCubit>(),
@@ -37,6 +38,26 @@ class AppRouter {
             child: const LoginScreen(),
           ),
         );
+      case Routes.register:
+         return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => getIt<CountryCodeCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<AuthPhoneStepCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<AuthOTPStepCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<OTPInputCubit>(),
+              )
+            ],
+            child: const RegisterScreen(),
+          ),
+        );  
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

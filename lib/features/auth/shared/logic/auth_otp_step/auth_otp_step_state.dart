@@ -1,11 +1,11 @@
-class LoginOTPStepState {
+class AuthOTPStepState {
   final String? formatedPhoneNumber;
   final String? phoneNumber;
   final bool isRetryOTPEnable;
   final bool isValidOTP;
   final int timerResetRequest; // each time it will increase the timer will reset
 
-  const LoginOTPStepState(
+  const AuthOTPStepState(
   {
     required this.timerResetRequest, 
     required this.isRetryOTPEnable,
@@ -14,21 +14,21 @@ class LoginOTPStepState {
     this.phoneNumber,
   });
 
-  LoginOTPStepState.initialState()
+  AuthOTPStepState.initialState()
       : formatedPhoneNumber = null,
         phoneNumber = null,
         isValidOTP = false,
         isRetryOTPEnable = false,
         timerResetRequest = 0;
 
-  LoginOTPStepState copyWith({
+  AuthOTPStepState copyWith({
     String? formatedPhoneNumber,
     String? phoneNumber,
     bool? isValidOTP,
     bool? isRetryOTPEnable,
     int? timerResetRequest,
   }) {
-    return LoginOTPStepState(
+    return AuthOTPStepState(
       formatedPhoneNumber: formatedPhoneNumber ?? this.formatedPhoneNumber,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       isValidOTP: isValidOTP ?? this.isValidOTP,

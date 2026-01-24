@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:e_chat_app/features/auth/domain/entities/otp_even.dart';
 import 'package:e_chat_app/features/auth/domain/repo/auth_repository.dart';
-import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_state.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OTPInputCubit extends Cubit<OTPInputState> {

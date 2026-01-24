@@ -1,14 +1,17 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
+import 'package:e_chat_app/core/widgets/filled_icon_button_blue50.dart';
 import 'package:e_chat_app/features/auth/shared/auth_phone_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginPhoneStepView extends StatelessWidget {
+class RegisterPhoneStepView extends StatelessWidget {
   final void Function() onStepViewNavigate;
-  final void Function() onRegisterNavigate;
-  const LoginPhoneStepView({super.key, required this.onStepViewNavigate, required this.onRegisterNavigate});
+  final void Function() onLoginNavigate;
+  const RegisterPhoneStepView(
+      {super.key,
+      required this.onStepViewNavigate,
+      required this.onLoginNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +26,20 @@ class LoginPhoneStepView extends StatelessWidget {
         Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 34.h),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
                 children: [
-                  Text(
-                    "Login",
-                    style: textStyle.font35Bold
-                        .copyWith(color: colorStyleExt.textOnPrimary),
+                  FilledIconButtonBlue50(
+                    onPressed: onLoginNavigate,
+                    text: "Login", 
+                    icon: Icon(Icons.arrow_back),
                   ),
                   Spacer(),
-                  FilledTextButtonBlue50(
-                    onPressed: onRegisterNavigate,
-                    text: "Register",
+                  Text(
+                    "Register",
+                    style: textStyle.font35Bold
+                        .copyWith(color: colorStyleExt.textOnPrimary),
                   ),
                 ],
               ),
@@ -44,7 +48,7 @@ class LoginPhoneStepView extends StatelessWidget {
                 "Enter your\nmoblie phone",
                 style: textStyle.font32Medium
                     .copyWith(color: colorStyleExt.textOnPrimary),
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.end,
               )
             ],
           ),
@@ -53,5 +57,6 @@ class LoginPhoneStepView extends StatelessWidget {
         AuthPhoneStep(onStepViewNavigate: onStepViewNavigate)
       ],
     );
-  }
+}
+
 }

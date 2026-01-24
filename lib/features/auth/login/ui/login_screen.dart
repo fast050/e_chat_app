@@ -1,6 +1,9 @@
+import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/features/auth/login/ui/login_otp_step_view.dart';
 import 'package:e_chat_app/features/auth/login/ui/login_phone_step_view.dart';
-import 'package:e_chat_app/features/auth/login/ui/widget/stack_background_with_shape_login.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/animated_background/auth_animated_background.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/animated_background/stack_background_with_shape_auth.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -20,12 +23,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   LoginStepView currentView = LoginStepView.phone;
   void goToOTP() => setState(() {
-        keyOtp++;
         currentView = LoginStepView.otp;
       });
   void backToPhone() => setState(() {
         currentView = LoginStepView.phone;
       });
+
+  void navigateToRegister() => context.pushNamed(Routes.register);    
 
   int keyOtp = 0;
 
@@ -40,16 +44,18 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-        body: StackBackgroundWithShapeLogin(
+        body: StackBackgroundWithShapeAuth(
           shouldAnimate: true,
+          curveSidePosition: CurveSidePosition.start,
           child: SingleChildScrollView(
               child: currentView == LoginStepView.phone
                   ? LoginPhoneStepView(
                       onStepViewNavigate: goToOTP,
+                      onRegisterNavigate: navigateToRegister,
                     )
                   : LoginOTPStepView(
-                      key: ValueKey(keyOtp),
-                      onBackNavigation: backToPhone,
+                      onBackNavigation: backToPhone, 
+                      onRegisterNavigate: navigateToRegister,
                     )),
         ),
       ),

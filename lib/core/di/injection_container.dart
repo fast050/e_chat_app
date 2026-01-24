@@ -3,10 +3,10 @@ import 'package:e_chat_app/core/local/country_code_local_source/data/repo/countr
 import 'package:e_chat_app/core/local/country_code_local_source/domain/repo/countries_code_repository.dart';
 import 'package:e_chat_app/features/auth/data/auth_repository_impl.dart';
 import 'package:e_chat_app/features/auth/domain/repo/auth_repository.dart';
-import 'package:e_chat_app/features/auth/widgets/otp_input/logic/otp_input_cubit.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/logic/country_code_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_otp_step/login_otp_step_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_phone_step/login_phone_step_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,12 +23,12 @@ Future<void> setupAppInstances() async {
     () => CountryCodeCubit(getIt<CountriesCodeRepository>()),
   );
 
-  getIt.registerFactory<LoginPhoneStepCubit>(
-    () => LoginPhoneStepCubit(),
+  getIt.registerFactory<AuthPhoneStepCubit>(
+    () => AuthPhoneStepCubit(),
   );
 
-  getIt.registerFactory<LoginOTPStepCubit>(
-    () => LoginOTPStepCubit(),
+  getIt.registerFactory<AuthOTPStepCubit>(
+    () => AuthOTPStepCubit(),
   );
 
   //Auth

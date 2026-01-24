@@ -1,6 +1,6 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
+import 'package:e_chat_app/core/widgets/filled_icon_button_blue50.dart';
 import 'package:e_chat_app/features/auth/shared/auth_otp_step.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_state.dart';
@@ -8,11 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginOTPStepView extends StatelessWidget {
+class RegisterOTPStepView extends StatelessWidget {
   final void Function() onBackNavigation;
-  final void Function() onRegisterNavigate;
+  final void Function() onLoginNavigate;
+  final void Function() onUserInfoNavigation;
 
-  const LoginOTPStepView({super.key, required this.onBackNavigation, required this.onRegisterNavigate});
+  const RegisterOTPStepView({
+    super.key,
+    required this.onBackNavigation,
+    required this.onLoginNavigate,
+    required this.onUserInfoNavigation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,19 +33,22 @@ class LoginOTPStepView extends StatelessWidget {
         Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 34.h),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Row(
                 children: [
-                  Text(
-                    "Login",
-                    style: textStyle.font35Bold
-                        .copyWith(color: colorStyleExt.textOnPrimary),
+                  FilledIconButtonBlue50(
+                    onPressed: onLoginNavigate,
+                    text: "Login",
+                    icon: Icon(Icons.arrow_back),
                   ),
                   Spacer(),
-                  FilledTextButtonBlue50(
-                      onPressed: onRegisterNavigate,
-                      text: "Register"),
+                  Text(
+                    "Register",
+                    style: textStyle.font35Bold.copyWith(
+                      color: colorStyleExt.textOnPrimary,
+                    ),
+                  ),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -60,9 +69,7 @@ class LoginOTPStepView extends StatelessWidget {
               SizedBox(
                 height: 133.h,
               ),
-              AuthOTPStep( onNavigation: () {
-                
-              },)
+              AuthOTPStep(onNavigation: onUserInfoNavigation,)
             ],
           ),
         ),

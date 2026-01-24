@@ -1,8 +1,8 @@
 import 'package:country_flags_pro/country_flags_pro.dart';
 import 'package:e_chat_app/core/local/country_code_local_source/domain/entities/country_code.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/logic/share_function.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/widget/country_picker.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/widget/phone_number_base_text_field.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/share_function.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/widget/country_picker.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/widget/phone_number_base_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

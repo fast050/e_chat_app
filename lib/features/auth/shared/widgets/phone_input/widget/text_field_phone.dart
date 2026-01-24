@@ -1,6 +1,6 @@
-import 'package:e_chat_app/features/auth/widgets/phone_input/logic/share_function.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/widget/phone_number_base_text_field.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/widget/phone_number_formatter.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/share_function.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/widget/phone_number_base_text_field.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/phone_input/widget/phone_number_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart'

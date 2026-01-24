@@ -1,23 +1,24 @@
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:e_chat_app/core/theme/gradients.dart';
-import 'package:e_chat_app/features/auth/login/ui/widget/login_animated_background.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/animated_background/auth_animated_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class StackBackgroundWithShapeLogin extends StatefulWidget {
+class StackBackgroundWithShapeAuth extends StatefulWidget {
   final Widget child;
   final bool shouldAnimate;
+  final CurveSidePosition curveSidePosition;
 
-  const StackBackgroundWithShapeLogin(
-      {super.key, required this.child, required this.shouldAnimate});
+  const StackBackgroundWithShapeAuth(
+      {super.key, required this.child, required this.shouldAnimate, required this.curveSidePosition});
 
   @override
-  State<StackBackgroundWithShapeLogin> createState() =>
-      _StackBackgroundWithShapeLoginState();
+  State<StackBackgroundWithShapeAuth> createState() =>
+      _StackBackgroundWithShapeAuthState();
 }
 
-class _StackBackgroundWithShapeLoginState
-    extends State<StackBackgroundWithShapeLogin> with WidgetsBindingObserver {
+class _StackBackgroundWithShapeAuthState
+    extends State<StackBackgroundWithShapeAuth> with WidgetsBindingObserver {
   bool _isKeyboardOpen = false;
 
   @override
@@ -61,7 +62,7 @@ class _StackBackgroundWithShapeLoginState
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final shapeHeight = size.height * .46 + MediaQuery.of(context).padding.top;
+    final shapeHeight = size.height * .44 + MediaQuery.of(context).padding.top;
 
     //handle background color for both Theme Mode, Light, Dark
     final mode = MediaQuery.platformBrightnessOf(context);
@@ -78,7 +79,8 @@ class _StackBackgroundWithShapeLoginState
           curve: Curves.bounceOut,
           builder: (context, value, _) {
             return CustomPaint(
-              painter: LoginBackgroundAnimate(
+              painter: AuthBackgroundAnimate(
+                curveSidePosition: widget.curveSidePosition,
                 topShapeGradient:
                     !isDarkMode ? AppGradients.lightBlueGradient : null,
                 topShapeColor: isDarkMode ? AppColors.blue900 : null,
