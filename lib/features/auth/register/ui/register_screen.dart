@@ -21,7 +21,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  RegisterStepView currentView = RegisterStepView.phone;
+  RegisterStepView currentView = RegisterStepView.userInformation;
   void goToOTP() => setState(() {
         currentView = RegisterStepView.otp;
       });
