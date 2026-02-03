@@ -1,5 +1,6 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
+import 'package:e_chat_app/features/auth/register/logic/register_user_information_cubit.dart';
 import 'package:e_chat_app/features/auth/register/ui/Register_screen.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
@@ -39,7 +40,7 @@ class AppRouter {
           ),
         );
       case Routes.register:
-         return MaterialPageRoute(
+        return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -53,11 +54,14 @@ class AppRouter {
               ),
               BlocProvider(
                 create: (_) => getIt<OTPInputCubit>(),
+              ),
+              BlocProvider(
+                create: (_) => getIt<RegisterUserInformationCubit>(),
               )
             ],
             child: const RegisterScreen(),
           ),
-        );  
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
