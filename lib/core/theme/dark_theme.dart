@@ -1,7 +1,9 @@
+import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/colors.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/theme/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// DARK THEME
 final ThemeData darkTheme = ThemeData(
@@ -17,6 +19,12 @@ final ThemeData darkTheme = ThemeData(
     onSurface: AppColors.neutral100,
     error: AppColors.red500,
     onError: AppColors.black,
+  ),
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: AppColors.white,
+    contentTextStyle: appTextThemeValue.font16Medium.copyWith(
+      color: AppColors.black
+    )
   ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(

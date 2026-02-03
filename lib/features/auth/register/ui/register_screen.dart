@@ -1,4 +1,5 @@
 import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/features/auth/register/ui/Register_otp_step_view.dart';
 import 'package:e_chat_app/features/auth/register/ui/Register_phone_step_view.dart';
 import 'package:e_chat_app/features/auth/register/ui/register_user_information_view.dart';
@@ -36,6 +37,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void onLoginNavigate() => context.pop();
 
+  void onNavigateHome() => context.pushNamedAndRemoveUntil(Routes.home , predicate: (route)=> false);
+
   Widget getCurrentView(RegisterStepView current) {
     switch (current) {
       case RegisterStepView.phone:
@@ -50,7 +53,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           onUserInfoNavigation: goToUserInfo,
         );
       case RegisterStepView.userInformation:
-        return RegisterUserInformationView();
+        return RegisterUserInformationView(
+          onNavigateScreen: onNavigateHome,
+        );
     }
   }
 
@@ -67,9 +72,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Scaffold(
         body: StackBackgroundWithShapeAuth(
           shouldAnimate: true,
-          curveSidePosition: currentView == RegisterStepView.userInformation ? CurveSidePosition.center : CurveSidePosition.end,
-          child: SingleChildScrollView(
-              child: getCurrentView(currentView)),
+          curveSidePosition: currentView == RegisterStepView.userInformation
+              ? CurveSidePosition.center
+              : CurveSidePosition.end,
+          child: SingleChildScrollView(child: getCurrentView(currentView)),
         ),
       ),
     );
