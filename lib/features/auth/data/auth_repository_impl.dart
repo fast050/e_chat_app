@@ -104,8 +104,5 @@ class AuthRepositoryImpl implements AuthRepository {
   bool get isSignedIn => _auth.currentUser != null;
 
   @override
-  bool get isNewUser => userCredential?.additionalUserInfo?.isNewUser == true;
-
-  @override
   Future<void> signOut() => _auth.signOut();
 }
