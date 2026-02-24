@@ -13,8 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  runApp(EChatApp(appRouter: AppRouter()));
- 
-  // Initialize DI (now non-blocking thanks to async initialization in Cubits)
+  // Initialize DI (required before the app accesses DI)
   await setupAppInstances();
+  runApp(EChatApp(appRouter: AppRouter()));
 }

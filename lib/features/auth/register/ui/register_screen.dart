@@ -15,7 +15,12 @@ import 'package:flutter/material.dart';
 enum RegisterStepView { phone, otp, userInformation }
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final Function() onLoginNavigate;
+  final Function() onNavigationScreen;
+
+  const RegisterScreen({super.key, 
+  required this.onLoginNavigate, 
+  required this.onNavigationScreen});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -23,38 +28,30 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   RegisterStepView currentView = RegisterStepView.phone;
-  void goToOTP() => setState(() {
-        currentView = RegisterStepView.otp;
-      });
 
-  void backToPhone() => setState(() {
-        currentView = RegisterStepView.phone;
-      });
+  void goToOTP() => setState(() => currentView = RegisterStepView.otp);
 
-  void goToUserInfo() => setState(() {
-        currentView = RegisterStepView.userInformation;
-      });
+  void backToPhone() => setState(() => currentView = RegisterStepView.phone);
 
-  void onLoginNavigate() => context.pop();
-
-  void onNavigateHome() => context.pushNamedAndRemoveUntil(Routes.home , predicate: (route)=> false);
+  void goToUserInfo() =>
+      setState(() => currentView = RegisterStepView.userInformation);      
 
   Widget getCurrentView(RegisterStepView current) {
     switch (current) {
       case RegisterStepView.phone:
         return RegisterPhoneStepView(
           onStepViewNavigate: goToOTP,
-          onLoginNavigate: onLoginNavigate,
+          onLoginNavigate: widget.onLoginNavigate,
         );
       case RegisterStepView.otp:
         return RegisterOTPStepView(
           onBackNavigation: backToPhone,
-          onLoginNavigate: onLoginNavigate,
+          onLoginNavigate: widget.onLoginNavigate,
           onUserInfoNavigation: goToUserInfo,
         );
       case RegisterStepView.userInformation:
         return RegisterUserInformationView(
-          onNavigateScreen: onNavigateHome,
+          onNavigateScreen: widget.onNavigationScreen,
         );
     }
   }

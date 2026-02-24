@@ -9,10 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginOTPStepView extends StatelessWidget {
-  final void Function() onBackNavigation;
+  final void Function() onNavigateScreen;
   final void Function() onRegisterNavigate;
 
-  const LoginOTPStepView({super.key, required this.onBackNavigation, required this.onRegisterNavigate});
+  const LoginOTPStepView({super.key, required this.onNavigateScreen, required this.onRegisterNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,7 @@ class LoginOTPStepView extends StatelessWidget {
               SizedBox(
                 height: 133.h,
               ),
-              AuthOTPStep( onNavigation: () {
-                
-              },)
+              AuthOTPStep( onNavigation: onNavigateScreen)
             ],
           ),
         ),

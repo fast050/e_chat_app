@@ -1,14 +1,13 @@
 import 'package:e_chat_app/core/helper/extenstions.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
-import 'package:e_chat_app/core/theme/app_text_theme.dart';
-import 'package:e_chat_app/core/theme/colors.dart';
-import 'package:e_chat_app/core/widgets/gradient_button.dart';
-import 'package:e_chat_app/features/onbording/ui/onboarding_step_details.dart';
 import 'package:e_chat_app/features/onbording/date/onboarding_step_details_model.dart';
-import 'package:e_chat_app/features/onbording/ui/page_view_indicator.dart';
+import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
+import 'package:e_chat_app/features/onbording/ui/logic/onboarding_state.dart';
+import 'package:e_chat_app/features/onbording/ui/onboarding_step_details.dart';
+import 'package:e_chat_app/features/onbording/ui/onborading_bottom.dart';
 import 'package:e_chat_app/features/onbording/ui/stack_with_background_shapes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -30,36 +29,40 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     for (int i = 0; i < 4; i++) {
       precacheImage(AssetImage(_onBoardingDetailsList[i].imagePath), context);
     }
+    
+    _pageController.addListener(setCurrentPageIndex);
+  }
 
-
-    _pageController.addListener(() {
-      if (_pageController.page != null) {
-        setState(() {
-          _currentPageIndex = _pageController.page!.round();
-        });
-      }
-    });
+  void setCurrentPageIndex() {
+    if (_pageController.page != null) {
+      setState(() {
+        _currentPageIndex = _pageController.page!.round();
+      });
+    }
   }
 
   @override
   void dispose() {
+    _pageController.removeListener(setCurrentPageIndex);
     _pageController.dispose();
     super.dispose();
   }
 
-  void onTapNext() {
-    _pageController.nextPage(
-        duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+  void onTapNext() async {
+    if (_currentPageIndex == _onBoardingDetailsList.length - 1) {
+      context.read<OnboardingCubit>().setHasSeenOnboarding();
+    } else {
+      _pageController.nextPage(
+          duration: Duration(milliseconds: 400), curve: Curves.easeIn);
+    }
   }
 
-  void onTapSkip() {
-    context.pushReplacementNamed(Routes.login);
+  void onTapSkip() async {
+    context.read<OnboardingCubit>().setHasSeenOnboarding();
   }
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).extension<AppTextTheme>()!;
-
     return Scaffold(
       body: StackWithBackgroundShapes(
         child: Column(children: [
@@ -79,51 +82,34 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: EdgeInsetsGeometry.fromLTRB(24.h, 50.h, 24.h, 45.h),
-              child: Column(
-                children: [
-                  GradientButton(onPressed: onTapSkip, text: 'Get started'),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: onTapSkip,
-                        style: TextButton.styleFrom(
-                            fixedSize: const Size(60, 60),
-                            shape: const CircleBorder(),
-                            padding: EdgeInsets.zero),
-                        child: Text(
-                          "Skip",
-                          style: textTheme.font16Medium,
-                        ),
-                      ),
-                      const Spacer(),
-                      PageViewIndicatior(
-                        textTheme: textTheme,
-                        currentPageIndex: _currentPageIndex,
-                        pageViewSize: onBoardingStepDetailsData.length,
-                      ),
-                      const Spacer(),
-                      FilledButton(
-                        style: FilledButton.styleFrom(
-                            fixedSize: const Size(60, 60),
-                            shape: const CircleBorder(),
-                            padding: EdgeInsets.zero,
-                            backgroundColor: AppColors.lightBlue200),
-                        onPressed: onTapNext,
-                        child: Text(
-                          "Next",
-                          textAlign: TextAlign.center,
-                          style: textTheme.font16Medium
-                              .copyWith(color: AppColors.lightBlue900),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            child: OnboradingBottom(
+              onTapNext: onTapNext,
+              onTapSkip: onTapSkip,
+              currentPageIndex: _currentPageIndex,
+              pageViewSize: _onBoardingDetailsList.length,
             ),
+          ),
+          BlocListener<OnboardingCubit, OnboardingState>(
+            listenWhen: (prev, current) => current.hasSeen == true,
+            listener: (context, state) {
+              if (state.status == OnboardingStatus.success) {
+                context.pushReplacementNamed(Routes.auth); // leave the page
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Something wrong happen"),
+                    action: SnackBarAction(
+                        label: "Referesh",
+                        onPressed: () {
+                          context
+                              .read<OnboardingCubit>()
+                              .setHasSeenOnboarding();
+                        }),
+                  ),
+                );
+              }
+            },
+            child: const SizedBox.shrink(),
           )
         ]),
       ),
