@@ -18,6 +18,12 @@ final ThemeData lightTheme = ThemeData(
     error: Colors.red,
     onError: AppColors.white,
   ),
+  snackBarTheme: SnackBarThemeData(
+    backgroundColor: AppColors.black,
+    contentTextStyle: appTextThemeValue.font16Medium.copyWith(
+      color: AppColors.blue100
+    )
+  ),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),

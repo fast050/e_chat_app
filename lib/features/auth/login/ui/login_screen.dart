@@ -1,6 +1,7 @@
 import 'package:e_chat_app/features/auth/login/ui/login_otp_step_view.dart';
 import 'package:e_chat_app/features/auth/login/ui/login_phone_step_view.dart';
-import 'package:e_chat_app/features/auth/login/ui/widget/stack_background_with_shape_login.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/animated_background/auth_animated_background.dart';
+import 'package:e_chat_app/features/auth/shared/widgets/animated_background/stack_background_with_shape_auth.dart';
 import 'package:flutter/material.dart';
 
 /*
@@ -11,7 +12,14 @@ import 'package:flutter/material.dart';
 enum LoginStepView { phone, otp }
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final Function() onRegisterNavigate;
+  final Function() onNavigateScreen;
+
+  const LoginScreen({
+    super.key,
+    required this.onRegisterNavigate,
+    required this.onNavigateScreen,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,13 +27,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginStepView currentView = LoginStepView.phone;
-  void goToOTP() => setState(() {
-        keyOtp++;
-        currentView = LoginStepView.otp;
-      });
-  void backToPhone() => setState(() {
-        currentView = LoginStepView.phone;
-      });
+
+  void goToOTP() => setState(() => currentView = LoginStepView.otp);
+
+  void backToPhone() => setState(() => currentView = LoginStepView.phone);
 
   int keyOtp = 0;
 
@@ -40,16 +45,18 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-        body: StackBackgroundWithShapeLogin(
+        body: StackBackgroundWithShapeAuth(
           shouldAnimate: true,
+          curveSidePosition: CurveSidePosition.start,
           child: SingleChildScrollView(
               child: currentView == LoginStepView.phone
                   ? LoginPhoneStepView(
                       onStepViewNavigate: goToOTP,
+                      onRegisterNavigate: widget.onRegisterNavigate,
                     )
                   : LoginOTPStepView(
-                      key: ValueKey(keyOtp),
-                      onBackNavigation: backToPhone,
+                      onNavigateScreen: widget.onNavigateScreen,
+                      onRegisterNavigate: widget.onRegisterNavigate,
                     )),
         ),
       ),

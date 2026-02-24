@@ -1,19 +1,14 @@
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/core/widgets/gradient_arrow_button.dart';
-import 'package:e_chat_app/core/widgets/gradient_checkbox.dart';
 import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
-import 'package:e_chat_app/features/auth/widgets/phone_input/widget/phone_number_input_widget.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_otp_step/login_otp_step_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_phone_step/login_phone_step_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_phone_step/login_phone_step_state.dart';
+import 'package:e_chat_app/features/auth/shared/auth_phone_step.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginPhoneStepView extends StatelessWidget {
   final void Function() onStepViewNavigate;
-  const LoginPhoneStepView({super.key, required this.onStepViewNavigate});
+  final void Function() onRegisterNavigate;
+  const LoginPhoneStepView({super.key, required this.onStepViewNavigate, required this.onRegisterNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +34,7 @@ class LoginPhoneStepView extends StatelessWidget {
                   ),
                   Spacer(),
                   FilledTextButtonBlue50(
-                    onPressed: () async {
-                      //ToDo navigation to the Register Flow
-                    },
+                    onPressed: onRegisterNavigate,
                     text: "Register",
                   ),
                 ],
@@ -57,60 +50,7 @@ class LoginPhoneStepView extends StatelessWidget {
           ),
         ),
         SizedBox(height: 203.h),
-        Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 24.h),
-          child: Column(
-            children: [
-              Text(
-                "You will get a code via sms.",
-                style: textStyle.font20Regular
-                    .copyWith(color: colorStyleExt.textAccent),
-              ),
-              PhoneNumberInputWidget(
-                onPhoneNumberValidationChange: (bool isValidPhoneNumber) {
-                  context
-                      .read<LoginPhoneStepCubit>()
-                      .onUpdatePhoneNumberValidation(isValidPhoneNumber);
-                },
-                onSubmitPhoneNumber: (String phoneNumber) {
-                  context
-                      .read<LoginOTPStepCubit>()
-                      .onSubmitPhoneNumber(phoneNumber);
-                },
-                onSubmitFormatedPhoneNumber: (String formatedPhoneNumber) {
-                  context
-                      .read<LoginOTPStepCubit>()
-                      .onSubmitFormatedPhoneNumber(formatedPhoneNumber);
-                },
-              ),
-              SizedBox(
-                height: 24.h,
-              ),
-              Row(
-                children: [
-                  GradientCheckbox(
-                    onTap: (isChecked) {
-                      // ToDo Use this check value
-                    },
-                    title: Text(
-                      "Remember me",
-                      style: textStyle.font16Bold
-                          .copyWith(color: colorStyleExt.textPrimary),
-                    ),
-                  ),
-                  Spacer(),
-                  BlocBuilder<LoginPhoneStepCubit, LoginPhoneStepState>(
-                    builder: (_, state) => GradientArrowButton(
-                      isClickEnable: state.isPhoneNumberValid,
-                      onPressed:
-                          onStepViewNavigate, // navigate internally to StepOtpView
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        )
+        AuthPhoneStep(onStepViewNavigate: onStepViewNavigate)
       ],
     );
   }
