@@ -1,5 +1,3 @@
-import 'package:e_chat_app/core/helper/extenstions.dart';
-import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/features/auth/register/ui/Register_otp_step_view.dart';
 import 'package:e_chat_app/features/auth/register/ui/Register_phone_step_view.dart';
 import 'package:e_chat_app/features/auth/register/ui/register_user_information_view.dart';
