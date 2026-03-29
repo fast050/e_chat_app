@@ -15,6 +15,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AuthOTPStep extends StatefulWidget {
 
   final Function() onNavigation;
+ // final isLogin
 
   const AuthOTPStep({
     super.key, 

@@ -1,10 +1,12 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
+import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
 import 'package:e_chat_app/features/auth/register/logic/register_user_information_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/auth_screen.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
@@ -33,8 +35,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
+              BlocProvider(create: (_) => getIt<AuthFlowCubit>()),
               BlocProvider(create: (_) => getIt<CountryCodeCubit>()),
               BlocProvider(create: (_) => getIt<AuthPhoneStepCubit>()),
+              BlocProvider(create: (_) => getIt<LoginMethodCubit>()),
               BlocProvider(create: (_) => getIt<AuthOTPStepCubit>()),
               BlocProvider(create: (_) => getIt<OTPInputCubit>()),
               BlocProvider(

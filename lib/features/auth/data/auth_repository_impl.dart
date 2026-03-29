@@ -2,107 +2,133 @@ import 'dart:async';
 
 import 'package:e_chat_app/features/auth/domain/entities/otp_even.dart';
 import 'package:e_chat_app/features/auth/domain/repo/auth_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuth _auth;
+  final SupabaseClient _supabase;
 
-  String _verificationId = '';
-  int? _resendToken;
-  UserCredential? userCredential;
+  // Store phone between sendOTP and verifyOTP calls
+  String? _pendingPhone;
 
-  int _attempt = 0; // internal guard: latest OTP request wins
-
-  AuthRepositoryImpl(this._auth);
-
-  void _safeAdd(StreamController<OTPEven> controller, OTPEven event) {
-    if (!controller.isClosed) controller.add(event);
-  }
-
-  Future<void> _safeClose(StreamController<OTPEven> controller) async {
-    if (!controller.isClosed) await controller.close();
-  }
-
-  bool _isStale(int attemptId) => attemptId != _attempt;
+  AuthRepositoryImpl(this._supabase);
 
   @override
-  Stream<OTPEven> sendOTP(String phoneNumber) {
-    final controller = StreamController<OTPEven>();
-    final attemptId = ++_attempt;
-
-    // Reset per attempt to avoid verifying with an old verificationId.
-    _verificationId = '';
-
-    _safeAdd(controller, OTPSending());
-
-    _auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      forceResendingToken: _resendToken,
-
-      verificationCompleted: (credential) async {
-        if (_isStale(attemptId)) return;
-
-        try {
-          userCredential = await _auth.signInWithCredential(credential);
-          _safeAdd(controller, OTPAutoVerfiyed(smsCode: credential.smsCode));
-        } on FirebaseAuthException catch (e) {
-          _safeAdd(controller, OTPFailed(errorMessage: e.message ?? 'Auto verification failed'));
-        } catch (_) {
-          _safeAdd(controller, OTPFailed(errorMessage: 'Auto verification failed'));
-        } finally {
-          await _safeClose(controller);
-        }
-      },
-
-      verificationFailed: (e) async {
-        if (_isStale(attemptId)) return;
-
-        _safeAdd(controller, OTPFailed(errorMessage: e.message ?? 'OTP failed'));
-        await _safeClose(controller);
-      },
-
-      codeSent: (verificationId, resendToken) {
-        if (_isStale(attemptId)) return;
-
-        _verificationId = verificationId;
-        _resendToken = resendToken;
-
-        _safeAdd(controller, OTPReceived());
-      },
-
-      codeAutoRetrievalTimeout: (_) {},
-    );
-
-    return controller.stream;
+  Stream<OTPEven> sendOTP({required String phoneNumber , bool? shouldCreateUser}) async* {
+    yield OTPSending();
+    try {
+      _pendingPhone = phoneNumber;
+      await _supabase.auth.signInWithOtp(
+        phone: phoneNumber,
+        shouldCreateUser: shouldCreateUser ?? false, // set false if only existing users can log in
+      );
+    } on AuthException catch (e) {
+      _pendingPhone = null;
+      yield OTPFailed(errorMessage: e.message);
+    } catch (e) {
+      _pendingPhone = null;
+      yield OTPFailed(errorMessage: e.toString());
+    }
   }
 
   @override
   Future<OTPEven> verifyOTP({required String smsCode}) async {
-    if (_verificationId.isEmpty) {
-      return OTPFailed(errorMessage: 'Please request OTP first.');
+    final phone = _pendingPhone;
+    if (phone == null) {
+      return OTPFailed(errorMessage: 'No pending OTP. Please request a new one.');
     }
-
     try {
-      final credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId,
-        smsCode: smsCode,
+      final response = await _supabase.auth.verifyOTP(
+        phone: phone,
+        token: smsCode,
+        type: OtpType.sms,
       );
-
-      userCredential = await _auth.signInWithCredential(credential);
-      return OTPVerfiyed();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-verification-code') {
-        return OTPFailed(errorMessage: 'Invalid OTP code');
+      if (response.user != null) {
+        _pendingPhone = null;
+        return OTPVerfiyed(); // or whatever your "verified" event is
       }
-      return OTPFailed(errorMessage: e.message ?? 'OTP verification failed');
-    } catch (_) {
-      return OTPFailed(errorMessage: 'OTP verification failed');
+      return OTPFailed(errorMessage: 'Verification failed. Please try again.');
+    } on AuthException catch (e) {
+      // Handle expired token specifically
+      if (e.statusCode == '403' && e.message.toLowerCase().contains('expired')) {
+        return OTPFailed(errorMessage: 'OTP has expired. Please request a new one.');
+      }
+      return OTPFailed(errorMessage: e.message);
+    } catch (e) {
+      return OTPFailed(errorMessage: e.toString());
     }
   }
 
   @override
-  bool get isSignedIn => _auth.currentUser != null;
+  bool get isSignedIn => _supabase.auth.currentUser != null;
 
   @override
-  Future<void> signOut() => _auth.signOut();
+  Future<void> signOut() async {
+    await _supabase.auth.signOut();
+  }
 }
+
+
+// import 'dart:async';
+
+// import 'package:e_chat_app/features/auth/domain/entities/otp_even.dart';
+// import 'package:e_chat_app/features/auth/domain/repo/auth_repository.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
+
+// class AuthRepositoryImpl implements AuthRepository {
+//   final SupabaseClient _supabase;
+
+//   String? _pendingEmail;
+
+//   AuthRepositoryImpl(this._supabase);
+
+//   @override
+//   Stream<OTPEven> sendOTP(String email) async* {
+//     yield OTPSending();
+//     try {
+//       _pendingEmail = "khalidwork050@gmail.com";
+//       await _supabase.auth.signInWithOtp(
+//         email: email,
+//         shouldCreateUser: true,
+//       );
+      
+//     } on AuthException catch (e) {
+//       _pendingEmail = null;
+//       yield OTPFailed(errorMessage: e.message);
+//     } catch (e) {
+//       _pendingEmail = null;
+//       yield OTPFailed(errorMessage: e.toString());
+//     }
+//   }
+
+//   @override
+//   Future<OTPEven> verifyOTP({required String smsCode}) async {
+//     final email = _pendingEmail;
+//     if (email == null) {
+//       return OTPFailed(errorMessage: 'No pending OTP. Please request a new one.');
+//     }
+//     try {
+//       final response = await _supabase.auth.verifyOTP(
+//         email: email,
+//         token: smsCode,
+//         type: OtpType.email, // 👈 changed from OtpType.sms
+//       );
+//       if (response.user != null) {
+//         _pendingEmail = null;
+//         return OTPVerfiyed(); // replace with your actual event
+//       }
+//       return OTPFailed(errorMessage: 'Verification failed. Please try again.');
+//     } on AuthException catch (e) {
+//       return OTPFailed(errorMessage: e.message);
+//     } catch (e) {
+//       return OTPFailed(errorMessage: e.toString());
+//     }
+//   }
+
+//   @override
+//   bool get isSignedIn => _supabase.auth.currentUser != null;
+
+//   @override
+//   Future<void> signOut() async {
+//     await _supabase.auth.signOut();
+//   }
+// }

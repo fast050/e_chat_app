@@ -4,21 +4,13 @@ import 'package:e_chat_app/core/widgets/filled_icon_button_blue50.dart';
 import 'package:e_chat_app/features/auth/shared/auth_otp_step.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_state.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterOTPStepView extends StatelessWidget {
-  final void Function() onBackNavigation;
-  final void Function() onLoginNavigate;
-  final void Function() onUserInfoNavigation;
-
-  const RegisterOTPStepView({
-    super.key,
-    required this.onBackNavigation,
-    required this.onLoginNavigate,
-    required this.onUserInfoNavigation,
-  });
+  const RegisterOTPStepView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +30,8 @@ class RegisterOTPStepView extends StatelessWidget {
               Row(
                 children: [
                   FilledIconButtonBlue50(
-                    onPressed: onLoginNavigate,
+                    onPressed: () =>
+                        context.read<AuthFlowCubit>().showLoginTab(),
                     text: "Login",
                     icon: Icon(Icons.arrow_back),
                   ),
@@ -69,7 +62,10 @@ class RegisterOTPStepView extends StatelessWidget {
               SizedBox(
                 height: 133.h,
               ),
-              AuthOTPStep(onNavigation: onUserInfoNavigation,)
+              AuthOTPStep(
+                onNavigation: () =>
+                    context.read<AuthFlowCubit>().goToRegisterUserInformation(),
+              )
             ],
           ),
         ),

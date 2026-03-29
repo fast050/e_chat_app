@@ -9,7 +9,7 @@ class OTPInputCubit extends Cubit<OTPInputState> {
   late final StreamSubscription<OTPEven> _otpEvenStream;
   OTPInputCubit(this._repo) : super(OTPInputState.initialState());
 
-  void sendOTP({required String? phoneNumber}) async {
+  void sendOTP({required String? phoneNumber , bool? shouldCreateUser}) async {
     if (phoneNumber == null || phoneNumber.isEmpty) {
       emit(
         state.copyWith(
@@ -21,7 +21,7 @@ class OTPInputCubit extends Cubit<OTPInputState> {
       return;
     }
 
-    _otpEvenStream = _repo.sendOTP(phoneNumber).listen((otpEven) {
+    _otpEvenStream = _repo.sendOTP(phoneNumber: phoneNumber , shouldCreateUser: shouldCreateUser).listen((otpEven) {
       switch (otpEven) {
         case OTPSending():
           {

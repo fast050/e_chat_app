@@ -48,10 +48,24 @@
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>NSPhotoLibraryUsageDescription</key>
-        <string>Describe why your app needs access to the photo library.</string>
-        <key>NSCameraUsageDescription</key>
-        <string>Describe why your app needs access to the camera.</string>
-        <key>NSMicrophoneUsageDescription</key>
-        <string>Describe why your app needs access to the microphone, if you intend to record videos.</string>
+		<string>Describe why your app needs access to the photo library.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Describe why your app needs access to the camera.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Describe why your app needs access to the microphone, if you intend to record videos.</string>
+        
+		<!-- Add this array for Deep Links -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>io.supabase.flutterquickstart</string>
+				</array>
+			</dict>
+		</array>
+
 	</dict>
 </plist>

@@ -1,18 +1,18 @@
+import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
 import 'package:e_chat_app/features/auth/shared/auth_otp_step.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_state.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginOTPStepView extends StatelessWidget {
-  final void Function() onNavigateScreen;
-  final void Function() onRegisterNavigate;
-
-  const LoginOTPStepView({super.key, required this.onNavigateScreen, required this.onRegisterNavigate});
+  const LoginOTPStepView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,10 @@ class LoginOTPStepView extends StatelessWidget {
                   ),
                   Spacer(),
                   FilledTextButtonBlue50(
-                      onPressed: onRegisterNavigate,
-                      text: "Register"),
+                    onPressed: () =>
+                        context.read<AuthFlowCubit>().showRegisterTab(),
+                    text: "Register",
+                  ),
                 ],
               ),
               SizedBox(height: 24.h),
@@ -60,7 +62,9 @@ class LoginOTPStepView extends StatelessWidget {
               SizedBox(
                 height: 133.h,
               ),
-              AuthOTPStep( onNavigation: onNavigateScreen)
+              AuthOTPStep(
+                onNavigation: () => context.pushReplacementNamed(Routes.home),
+              )
             ],
           ),
         ),

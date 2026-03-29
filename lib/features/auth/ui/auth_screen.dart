@@ -1,10 +1,9 @@
-import 'package:e_chat_app/core/helper/extenstions.dart';
-import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/features/auth/login/ui/login_screen.dart';
 import 'package:e_chat_app/features/auth/register/ui/register_screen.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_state.dart';
 import 'package:flutter/material.dart';
-
-enum AuthTab { login, register }
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthScreen extends StatefulWidget {
   final AuthTab initialTab;
@@ -16,34 +15,29 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  late AuthTab _currentTab;
-
   @override
   void initState() {
     super.initState();
-    _currentTab = widget.initialTab;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<AuthFlowCubit>().setInitialTab(widget.initialTab);
+    });
   }
-
-  void _showLogin() => setState(() => _currentTab = AuthTab.login);
-
-  void _showRegister() => setState(() => _currentTab = AuthTab.register);
-
-  void goToHome() => context.pushReplacementNamed(Routes.home);
 
   @override
   Widget build(BuildContext context) {
-    return IndexedStack(
-      index: _currentTab.index,
-      children: [
-        LoginScreen(
-          onRegisterNavigate: _showRegister,
-          onNavigateScreen: goToHome,
-        ),
-        RegisterScreen(
-          onLoginNavigate: _showLogin,
-          onNavigationScreen: goToHome,
-        ),
-      ],
+    return BlocBuilder<AuthFlowCubit, AuthFlowState>(
+      buildWhen: (previous, current) =>
+          previous.currentTab != current.currentTab,
+      builder: (context, state) {
+        return IndexedStack(
+          index: state.currentTab.index,
+          children: const [
+            LoginScreen(),
+            RegisterScreen(),
+          ],
+        );
+      },
     );
   }
 }
