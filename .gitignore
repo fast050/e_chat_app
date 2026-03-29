@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 OTP_CODE_DOCUMENTATION.md
 PROJECT_CODE_DOCUMENTATION.md
+
+
+*.env

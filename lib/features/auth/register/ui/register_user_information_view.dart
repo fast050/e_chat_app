@@ -1,4 +1,5 @@
 import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/widgets/filled_icon_button_blue50.dart';
@@ -7,14 +8,13 @@ import 'package:e_chat_app/features/auth/register/logic/register_user_informatio
 import 'package:e_chat_app/features/auth/register/logic/register_user_information_state.dart';
 import 'package:e_chat_app/features/auth/register/ui/image_picker_selecter.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/app_base_text_field.dart';
+import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterUserInformationView extends StatelessWidget {
-  final Function() onNavigateScreen;
-  const RegisterUserInformationView(
-      {super.key, required this.onNavigateScreen});
+  const RegisterUserInformationView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class RegisterUserInformationView extends StatelessWidget {
               children: [
                 FilledIconButtonBlue50(
                   onPressed: () {
-                    context.pop();
+                    context.read<AuthFlowCubit>().backToRegisterOTP();
                   },
                   icon: const Icon(Icons.arrow_back),
                   text: "Login",
@@ -73,7 +73,8 @@ class RegisterUserInformationView extends StatelessWidget {
                     .read<RegisterUserInformationCubit>()
                     .onSubmittedUserInformationData();
                 if (isSubmitted) {
-                  onNavigateScreen();
+                  if (!context.mounted) return;
+                  context.pushReplacementNamed(Routes.home);
                 }
               },
             ),
