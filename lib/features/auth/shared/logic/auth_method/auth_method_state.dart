@@ -1,27 +1,27 @@
-enum LoginMethod { phone, email }
+enum AuthMethod { phone, email }
 
-class LoginMethodState {
-  final LoginMethod loginMethod;
+class AuthMethodState {
+  final AuthMethod loginMethod;
   final String email;
   final bool isEmailValid;
 
-  const LoginMethodState({
+  const AuthMethodState({
     required this.loginMethod,
     required this.email,
     required this.isEmailValid,
   });
 
-  LoginMethodState.initialState()
-      : loginMethod = LoginMethod.phone,
+  AuthMethodState.initialState()
+      : loginMethod = AuthMethod.phone,
         email = '',
         isEmailValid = false;
 
-  LoginMethodState copyWith({
-    LoginMethod? loginMethod,
+  AuthMethodState copyWith({
+    AuthMethod? loginMethod,
     String? email,
     bool? isEmailValid,
   }) {
-    return LoginMethodState(
+    return AuthMethodState(
       loginMethod: loginMethod ?? this.loginMethod,
       email: email ?? this.email,
       isEmailValid: isEmailValid ?? this.isEmailValid,

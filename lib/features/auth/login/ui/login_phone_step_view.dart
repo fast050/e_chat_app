@@ -2,8 +2,8 @@ import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/widgets/filled_text_button_blue50.dart';
 import 'package:e_chat_app/core/widgets/gradient_button.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_state.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_state.dart';
 import 'package:e_chat_app/features/auth/shared/auth_email_step.dart';
 import 'package:e_chat_app/features/auth/shared/auth_phone_step.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
@@ -45,11 +45,11 @@ class LoginPhoneStepView extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24.h),
-              BlocBuilder<LoginMethodCubit, LoginMethodState>(
+              BlocBuilder<AuthMethodCubit, AuthMethodState>(
                 buildWhen: (previous, current) =>
                     previous.loginMethod != current.loginMethod,
                 builder: (context, state) => Text(
-                  state.loginMethod == LoginMethod.phone
+                  state.loginMethod == AuthMethod.phone
                       ? "Enter your\nmoblie phone"
                       : "Enter your\nemail address",
                   style: textStyle.font32Medium
@@ -60,11 +60,11 @@ class LoginPhoneStepView extends StatelessWidget {
             ],
           ),
         ),
-        BlocBuilder<LoginMethodCubit, LoginMethodState>(
+        BlocBuilder<AuthMethodCubit, AuthMethodState>(
           buildWhen: (previous, current) =>
               previous.loginMethod != current.loginMethod,
           builder: (context, state) {
-            final isPhoneLogin = state.loginMethod == LoginMethod.phone;
+            final isPhoneLogin = state.loginMethod == AuthMethod.phone;
             return Column(
               children: [
                 SizedBox(height: 203.h),
@@ -83,7 +83,7 @@ class LoginPhoneStepView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 24.h),
                   child: GradientButton(
                     onPressed: () =>
-                        context.read<LoginMethodCubit>().toggleLoginMethod(),
+                        context.read<AuthMethodCubit>().toggleLoginMethod(),
                     text: isPhoneLogin
                         ? "Or Login with Email"
                         : "Or Login with Phone Number",

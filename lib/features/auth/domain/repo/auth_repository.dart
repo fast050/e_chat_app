@@ -7,6 +7,8 @@ abstract interface class AuthRepository {
     required String smsCode,
   });
 
+  Future<void> emailMagicLink(String email);
+
   bool get isSignedIn;
 
   Future<void> signOut();

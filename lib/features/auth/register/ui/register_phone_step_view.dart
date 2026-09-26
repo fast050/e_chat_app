@@ -2,10 +2,10 @@ import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/widgets/filled_icon_button_blue50.dart';
 import 'package:e_chat_app/core/widgets/gradient_button.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_state.dart';
 import 'package:e_chat_app/features/auth/shared/auth_email_step.dart';
 import 'package:e_chat_app/features/auth/shared/auth_phone_step.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_state.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,11 +46,11 @@ class RegisterPhoneStepView extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24.h),
-              BlocBuilder<LoginMethodCubit, LoginMethodState>(
+              BlocBuilder<AuthMethodCubit, AuthMethodState>(
                 buildWhen: (previous, current) =>
                     previous.loginMethod != current.loginMethod,
                 builder: (context, state) => Text(
-                  state.loginMethod == LoginMethod.phone
+                  state.loginMethod == AuthMethod.phone
                       ? "Enter your\nmoblie phone"
                       : "Enter your\nemail address",
                   style: textStyle.font32Medium
@@ -61,11 +61,11 @@ class RegisterPhoneStepView extends StatelessWidget {
             ],
           ),
         ),
-        BlocBuilder<LoginMethodCubit, LoginMethodState>(
+        BlocBuilder<AuthMethodCubit, AuthMethodState>(
           buildWhen: (previous, current) =>
               previous.loginMethod != current.loginMethod,
           builder: (context, state) {
-            final isPhoneRegister = state.loginMethod == LoginMethod.phone;
+            final isPhoneRegister = state.loginMethod == AuthMethod.phone;
             return Column(
               children: [
                 SizedBox(height: 203.h),
@@ -84,7 +84,7 @@ class RegisterPhoneStepView extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 24.h),
                   child: GradientButton(
                     onPressed: () =>
-                        context.read<LoginMethodCubit>().toggleLoginMethod(),
+                        context.read<AuthMethodCubit>().toggleLoginMethod(),
                     text: isPhoneRegister
                         ? "Or Register with Email"
                         : "Or Register with Phone Number",

@@ -3,9 +3,10 @@ import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/core/widgets/email_text_field.dart';
 import 'package:e_chat_app/core/widgets/gradient_arrow_button.dart';
 import 'package:e_chat_app/core/widgets/gradient_checkbox.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_state.dart';
-import 'package:e_chat_app/features/auth/shared/widgets/app_base_text_field.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_email_step/auth_email_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_email_step/auth_email_state.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,13 +32,10 @@ class AuthEmailStep extends StatelessWidget {
           ),
           EmailTextField(
             onChanged: ({required email, required isEmailValid}) {
-              context.read<LoginMethodCubit>().onEmailChanged(
-                    email: email,
-                    isEmailValid: isEmailValid,
-                  );
+              context.read<AuthEmailCubit>().loginWithEmailMigicLink(email);
             },
           ),
-          BlocBuilder<LoginMethodCubit, LoginMethodState>(
+          BlocBuilder<AuthMethodCubit, AuthMethodState>(
             buildWhen: (previous, current) =>
                 previous.email != current.email ||
                 previous.isEmailValid != current.isEmailValid,
@@ -69,7 +67,7 @@ class AuthEmailStep extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              BlocBuilder<LoginMethodCubit, LoginMethodState>(
+              BlocBuilder<AuthEmailCubit, AuthEmailState>(
                 buildWhen: (previous, current) =>
                     previous.isEmailValid != current.isEmailValid,
                 builder: (_, state) => GradientArrowButton(

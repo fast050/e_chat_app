@@ -65,6 +65,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> signOut() async {
     await _supabase.auth.signOut();
   }
+  
+  @override
+  Future<void> emailMagicLink(String email) async {
+       await _supabase.auth.signInWithOtp(email: email , shouldCreateUser: false);
+  }
 }
 
 

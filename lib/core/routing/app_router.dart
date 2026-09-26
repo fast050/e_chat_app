@@ -1,7 +1,8 @@
 import 'package:e_chat_app/core/di/injection_container.dart';
 import 'package:e_chat_app/core/routing/routes.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
 import 'package:e_chat_app/features/auth/register/logic/register_user_information_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_email_step/auth_email_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
@@ -38,9 +39,10 @@ class AppRouter {
               BlocProvider(create: (_) => getIt<AuthFlowCubit>()),
               BlocProvider(create: (_) => getIt<CountryCodeCubit>()),
               BlocProvider(create: (_) => getIt<AuthPhoneStepCubit>()),
-              BlocProvider(create: (_) => getIt<LoginMethodCubit>()),
+              BlocProvider(create: (_) => getIt<AuthMethodCubit>()),
               BlocProvider(create: (_) => getIt<AuthOTPStepCubit>()),
               BlocProvider(create: (_) => getIt<OTPInputCubit>()),
+              BlocProvider(create: (_) => getIt<AuthEmailCubit>()),
               BlocProvider(
                 create: (_) => getIt<RegisterUserInformationCubit>(),
               ),

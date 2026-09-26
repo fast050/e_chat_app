@@ -6,8 +6,9 @@ import 'package:e_chat_app/core/local/local_storage/share_pref_store.dart';
 import 'package:e_chat_app/features/auth/data/auth_repository_impl.dart';
 import 'package:e_chat_app/features/auth/domain/repo/auth_repository.dart';
 import 'package:e_chat_app/features/auth/domain/repo/user_repository.dart';
-import 'package:e_chat_app/features/auth/login/logic/login_method/login_method_cubit.dart';
 import 'package:e_chat_app/features/auth/register/logic/register_user_information_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_email_step/auth_email_cubit.dart';
+import 'package:e_chat_app/features/auth/shared/logic/auth_method/auth_method_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_otp_step/auth_otp_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone_step_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
@@ -38,8 +39,8 @@ Future<void> setupAppInstances() async {
     () => AuthPhoneStepCubit(),
   );
 
-  getIt.registerFactory<LoginMethodCubit>(
-    () => LoginMethodCubit(),
+  getIt.registerFactory<AuthMethodCubit>(
+    () => AuthMethodCubit(),
   );
 
   getIt.registerFactory<AuthFlowCubit>(
@@ -48,6 +49,10 @@ Future<void> setupAppInstances() async {
 
   getIt.registerFactory<AuthOTPStepCubit>(
     () => AuthOTPStepCubit(),
+  );
+
+  getIt.registerFactory<AuthEmailCubit>(
+    () => AuthEmailCubit(getIt<AuthRepository>())
   );
 
   //SupabaseClient
