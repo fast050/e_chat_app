@@ -74,7 +74,7 @@ class RegisterUserInformationView extends StatelessWidget {
                     .onSubmittedUserInformationData();
                 if (isSubmitted) {
                   if (!context.mounted) return;
-                  context.pushReplacementNamed(Routes.home);
+                  context.pushReplacementNamed(Routes.chats);
                 }
               },
             ),

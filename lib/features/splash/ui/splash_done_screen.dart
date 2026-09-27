@@ -54,7 +54,7 @@ class _SplashDoneScreenState extends State<SplashDoneScreen> {
                       case NavgiateTo.auth:
                         context.pushReplacementNamed(Routes.auth);
                       case NavgiateTo.home:
-                        context.pushReplacementNamed(Routes.home);
+                        context.pushReplacementNamed(Routes.chats);
                       case NavgiateTo.onboarding:
                         context.pushReplacementNamed(Routes.onBoarding);
                       default:

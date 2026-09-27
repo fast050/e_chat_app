@@ -10,10 +10,16 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
   final Color textOnSecondry; // Light-Blue-600 <=> White
   final Color textPrimaryBrand; // Blue-500 <=> Light-blue-500
   final Color error; // red-500 <=> red-500
+  final Color textTertiary; // Neutral-500 <=> Neutral-100
+  final Color
+      textOnAccent; // white <=> white (on light-blue badge / active nav)
 
   // Surfaces
   final Color inputBackground; // neutral-50 <=> neutral-900
   final Color cardBackground; // neutral100 <=> neutral100
+  final Color headerBackground; // blue-600 <=> neutral-900
+  final Color badgeBackground; // light-blue-500 <=> light-blue-500
+  final Color navBarBackground; // white <=> black
 
   const AppSemanticColors({
     required this.textPrimary,
@@ -25,6 +31,11 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     required this.error,
     required this.inputBackground,
     required this.cardBackground,
+    required this.textTertiary,
+    required this.textOnAccent,
+    required this.headerBackground,
+    required this.badgeBackground,
+    required this.navBarBackground,
   });
 
   @override
@@ -38,6 +49,11 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
     Color? error,
     Color? inputBackground,
     Color? cardBackground,
+    Color? textTertiary,
+    Color? textOnAccent,
+    Color? headerBackground,
+    Color? badgeBackground,
+    Color? navBarBackground,
   }) {
     return AppSemanticColors(
       textPrimary: textPrimary ?? this.textPrimary,
@@ -49,6 +65,11 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       error: error ?? this.error,
       inputBackground: inputBackground ?? this.inputBackground,
       cardBackground: cardBackground ?? this.cardBackground,
+      textTertiary: textTertiary ?? this.textTertiary,
+      textOnAccent: textOnAccent ?? this.textOnAccent,
+      headerBackground: headerBackground ?? this.headerBackground,
+      badgeBackground: badgeBackground ?? this.badgeBackground,
+      navBarBackground: navBarBackground ?? this.navBarBackground,
     );
   }
 
@@ -68,6 +89,11 @@ class AppSemanticColors extends ThemeExtension<AppSemanticColors> {
       error: _lerp(error, other.error),
       inputBackground: _lerp(inputBackground, other.inputBackground),
       cardBackground: _lerp(cardBackground, other.cardBackground),
+      textTertiary: _lerp(textTertiary, other.textTertiary),
+      textOnAccent: _lerp(textOnAccent, other.textOnAccent),
+      headerBackground: _lerp(headerBackground, other.headerBackground),
+      badgeBackground: _lerp(badgeBackground, other.badgeBackground),
+      navBarBackground: _lerp(navBarBackground, other.navBarBackground),
     );
   }
 }

@@ -19,11 +19,9 @@ final ThemeData darkTheme = ThemeData(
     onError: AppColors.black,
   ),
   snackBarTheme: SnackBarThemeData(
-    backgroundColor: AppColors.white,
-    contentTextStyle: appTextThemeValue.font16Medium.copyWith(
-      color: AppColors.black
-    )
-  ),
+      backgroundColor: AppColors.white,
+      contentTextStyle:
+          appTextThemeValue.font16Medium.copyWith(color: AppColors.black)),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),
@@ -46,7 +44,12 @@ final ThemeData darkTheme = ThemeData(
       textOnSecondry: AppColors.white,
       textPrimaryBrand: AppColors.lightBlue500,
       inputBackground: AppColors.neutral900,
-      cardBackground: AppColors.neutral100, 
+      cardBackground: AppColors.neutral100,
+      textTertiary: AppColors.neutral100,
+      textOnAccent: AppColors.white,
+      headerBackground: AppColors.neutral900,
+      badgeBackground: AppColors.lightBlue500,
+      navBarBackground: AppColors.black,
       error: AppColors.red500,
     ),
   ],

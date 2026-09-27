@@ -9,6 +9,8 @@ import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_inpu
 import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/auth_screen.dart';
+import 'package:e_chat_app/features/chats/ui/chats_screen.dart';
+import 'package:e_chat_app/features/chats/ui/logic/chats_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
 import 'package:e_chat_app/features/splash/logic/splash_done_cubit.dart';
@@ -48,6 +50,13 @@ class AppRouter {
               ),
             ],
             child: const AuthScreen(),
+          ),
+        );
+      case Routes.chats:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<ChatsCubit>()..loadChats(),
+            child: const ChatsScreen(),
           ),
         );
       default:
