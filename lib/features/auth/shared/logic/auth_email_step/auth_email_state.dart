@@ -1,24 +1,30 @@
+import 'package:e_chat_app/core/helper/ui_error.dart';
 
 class AuthEmailState {
-  final String email;
-  final bool isEmailValid;
+  final bool isSubmitting;
+  final bool linkSent;
+  final UiError? error;
 
   const AuthEmailState({
-    required this.email,
-    required this.isEmailValid,
+    required this.isSubmitting,
+    required this.linkSent,
+    this.error,
   });
 
   AuthEmailState.initialState()
-      :  email = '',
-        isEmailValid = false;
+      : isSubmitting = false,
+        linkSent = false,
+        error = null;
 
   AuthEmailState copyWith({
-    String? email,
-    bool? isEmailValid,
+    bool? isSubmitting,
+    bool? linkSent,
+    UiError? error,
   }) {
     return AuthEmailState(
-      email: email ?? this.email,
-      isEmailValid: isEmailValid ?? this.isEmailValid,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
+      linkSent: linkSent ?? this.linkSent,
+      error: error ?? this.error,
     );
   }
 }

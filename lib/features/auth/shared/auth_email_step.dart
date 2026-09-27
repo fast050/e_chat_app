@@ -26,13 +26,15 @@ class AuthEmailStep extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "You will get a code via email.",
+            "You will get a login link via email.",
             style: textStyle.font20Regular
                 .copyWith(color: colorStyleExt.textAccent),
           ),
           EmailTextField(
             onChanged: ({required email, required isEmailValid}) {
-              context.read<AuthEmailCubit>().loginWithEmailMigicLink(email);
+              context
+                  .read<AuthMethodCubit>()
+                  .onEmailChanged(email: email, isEmailValid: isEmailValid);
             },
           ),
           BlocBuilder<AuthMethodCubit, AuthMethodState>(
@@ -53,7 +55,34 @@ class AuthEmailStep extends StatelessWidget {
               );
             },
           ),
-          SizedBox(height: 12.h),
+          BlocListener<AuthEmailCubit, AuthEmailState>(
+            listenWhen: (previous, current) => previous.error != current.error,
+            listener: (context, state) {
+              final error = state.error;
+              if (error == null) return;
+              ScaffoldMessenger.of(context)
+                ..clearSnackBars()
+                ..showSnackBar(SnackBar(content: Text(error.message)));
+            },
+            child: BlocBuilder<AuthEmailCubit, AuthEmailState>(
+              buildWhen: (previous, current) =>
+                  previous.linkSent != current.linkSent,
+              builder: (context, state) {
+                if (!state.linkSent) return SizedBox(height: 12.h);
+                return Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Magic link sent — check your email.",
+                      style: textStyle.font16Medium
+                          .copyWith(color: colorStyleExt.textPrimary),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           Row(
             children: [
               GradientCheckbox(
@@ -67,14 +96,26 @@ class AuthEmailStep extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              BlocBuilder<AuthEmailCubit, AuthEmailState>(
+              BlocBuilder<AuthMethodCubit, AuthMethodState>(
                 buildWhen: (previous, current) =>
+                    previous.email != current.email ||
                     previous.isEmailValid != current.isEmailValid,
-                builder: (_, state) => GradientArrowButton(
-                  isClickEnable: state.isEmailValid,
-                  onPressed: onSubmit,
+                builder: (_, methodState) =>
+                    BlocBuilder<AuthEmailCubit, AuthEmailState>(
+                  buildWhen: (previous, current) =>
+                      previous.isSubmitting != current.isSubmitting,
+                  builder: (context, emailState) => GradientArrowButton(
+                    isClickEnable:
+                        methodState.isEmailValid && !emailState.isSubmitting,
+                    onPressed: () {
+                      context
+                          .read<AuthEmailCubit>()
+                          .loginWithEmailMigicLink(methodState.email);
+                      onSubmit();
+                    },
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ],

@@ -27,19 +27,17 @@ Sections marked **(not set up yet)** describe rules for new work that need a one
 
 `environment: sdk: ^3.6.0` in `pubspec.yaml` is a stale floor — `pubspec.lock` actually resolves `dart >=3.10.0` / `flutter >=3.38.0`. Modern Dart 3 syntax (`sealed class`, pattern-matching `switch`, `abstract interface class`) is already in active use — don't self-restrict to older syntax.
 
-Dev dependencies today: `flutter_test`, `flutter_lints`. `analysis_options.yaml` is stock `flutter_lints` with all custom rules commented out.
+Dev dependencies today: `flutter_test`, `flutter_lints`, `bloc_test`, `mocktail`. `analysis_options.yaml` is stock `flutter_lints` with all custom rules commented out.
 
-**Planned additions (not set up yet):** `bloc_test` + `mocktail` (dev, for tests), `flutter_secure_storage` (for the auth session).
+**Planned additions (not set up yet):** `flutter_secure_storage` (for the auth session).
 
 ## One-Time Setup (not set up yet)
 
 These are deliberate tasks, done once. Until they're done, the related rules below can't be followed — say so instead of working around it.
 
-1. **Testing deps:** add `bloc_test` and `mocktail` to `dev_dependencies`.
-2. **Replace `test/widget_test.dart`:** it's the default counter-app template and doesn't match the real app, so it will break a full `flutter test` run. Delete it and add real tests (see Testing).
-3. **Secure session storage:** add `flutter_secure_storage`, create `SecureSessionStorage` (see Security → Tokens), and pass it to `Supabase.initialize` in `main.dart`. Users will be logged out once after this ships (the old session lived in SharedPreferences).
-4. **Remove codegen deps (optional cleanup):** delete `freezed`, `freezed_annotation`, `json_annotation`, `json_serializable`, `retrofit`, `retrofit_generator` from `pubspec.yaml` so nobody reaches for them by accident.
-5. **Secrets hygiene:** confirm `.env` is in `.gitignore` (`git check-ignore .env` prints `.env`), and commit a `.env.example` with the same keys and empty values.
+1. **Secure session storage:** add `flutter_secure_storage`, create `SecureSessionStorage` (see Security → Tokens), and pass it to `Supabase.initialize` in `main.dart`. Users will be logged out once after this ships (the old session lived in SharedPreferences).
+2. **Remove codegen deps (optional cleanup):** delete `freezed`, `freezed_annotation`, `json_annotation`, `json_serializable`, `retrofit`, `retrofit_generator` from `pubspec.yaml` so nobody reaches for them by accident.
+3. **Secrets hygiene:** confirm `.env` is in `.gitignore` (`git check-ignore .env` prints `.env`), and commit a `.env.example` with the same keys and empty values.
 
 ## Architecture at a Glance
 
@@ -208,7 +206,7 @@ BlocListener<XCubit, XState>(
   child: const SizedBox.shrink(),
 )
 ```
-`UiError` has no `==`/`Equatable` override, so every new instance is reference-distinct — `listenWhen` fires exactly once per new error with no counter field needed. This class doesn't exist in the codebase yet; create it (suggested home: `lib/core/helper/ui_error.dart`) the first time a new simple Cubit needs it.
+`UiError` has no `==`/`Equatable` override, so every new instance is reference-distinct — `listenWhen` fires exactly once per new error with no counter field needed. Lives at `lib/core/helper/ui_error.dart`; first used by `AuthEmailCubit`.
 
 The old `errorMessage` + incrementing `snackBarEventId` counter (e.g. `RegisterUserInformationState`, `OnboardingState`) is the legacy version of this same idea — it's still in existing Cubits, but don't use it in new code, and don't migrate existing Cubits to `UiError` unless you're already changing that Cubit for its own reasons.
 
@@ -433,7 +431,7 @@ Follow this split for new reusable, Cubit-aware UI pieces. The dumb widget is ea
 - Quote style and trailing commas are genuinely inconsistent in existing code — there's no rule to follow here, don't invent one.
 - Existing typos are pervasive and intentional to leave alone: `onbording`/`onborading`, `OTPEven`/`OTPVerfiyed`/`OTPAutoVerfiyed`, `loginWithEmailMigicLink`, `navgiateTo`/`NavgiateTo`, `extenstions.dart`, `countris_code_repository_impl.dart`, the `date/` folder in `onbording/`. Spell new identifiers correctly, but don't silently rename these as a drive-by inside unrelated work — a typo cleanup is a separate, deliberate task.
 
-## Testing **(not set up yet — see One-Time Setup)**
+## Testing
 
 Purpose: every time a feature is added or logic changes, the full test suite proves nothing that already worked broke.
 
