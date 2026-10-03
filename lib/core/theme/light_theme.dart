@@ -19,11 +19,9 @@ final ThemeData lightTheme = ThemeData(
     onError: AppColors.white,
   ),
   snackBarTheme: SnackBarThemeData(
-    backgroundColor: AppColors.black,
-    contentTextStyle: appTextThemeValue.font16Medium.copyWith(
-      color: AppColors.blue100
-    )
-  ),
+      backgroundColor: AppColors.black,
+      contentTextStyle:
+          appTextThemeValue.font16Medium.copyWith(color: AppColors.blue100)),
   textButtonTheme: TextButtonThemeData(
     style: ButtonStyle(
       foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),
@@ -35,22 +33,28 @@ final ThemeData lightTheme = ThemeData(
       foregroundColor: WidgetStatePropertyAll(AppColors.lightBlue600),
     ),
   ),
-  checkboxTheme: CheckboxThemeData(
-    
-  ),
+  checkboxTheme: CheckboxThemeData(),
   extensions: <ThemeExtension<dynamic>>[
     appTextThemeValue.withColor(AppColors.blue500),
-    AppSemanticColors(
-      // 5 text roles from table
-      textPrimary: AppColors.neutral900,
-      textSecondary: AppColors.neutral300,
-      textAccent: AppColors.lightBlue900,
-      textOnPrimary: AppColors.white,
-      textOnSecondry: AppColors.lightBlue600,
-      textPrimaryBrand: AppColors.blue500,
-      error: AppColors.red500,
-      inputBackground: AppColors.neutral50,
-      cardBackground: AppColors.neutral100,
-    ),
+    lightSemanticColors,
   ],
+);
+
+// Top-level const so widget tests can use it without building the full theme.
+const lightSemanticColors = AppSemanticColors(
+  // 5 text roles from table
+  textPrimary: AppColors.neutral900,
+  textSecondary: AppColors.neutral300,
+  textAccent: AppColors.lightBlue900,
+  textOnPrimary: AppColors.white,
+  textOnSecondry: AppColors.lightBlue600,
+  textPrimaryBrand: AppColors.blue500,
+  error: AppColors.red500,
+  inputBackground: AppColors.neutral50,
+  cardBackground: AppColors.neutral100,
+  textTertiary: AppColors.neutral500,
+  textOnAccent: AppColors.white,
+  headerBackground: AppColors.blue600,
+  badgeBackground: AppColors.lightBlue500,
+  navBarBackground: AppColors.white,
 );

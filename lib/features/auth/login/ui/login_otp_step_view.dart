@@ -63,7 +63,7 @@ class LoginOTPStepView extends StatelessWidget {
                 height: 133.h,
               ),
               AuthOTPStep(
-                onNavigation: () => context.pushReplacementNamed(Routes.home),
+                onNavigation: () => context.pushReplacementNamed(Routes.chats),
               )
             ],
           ),

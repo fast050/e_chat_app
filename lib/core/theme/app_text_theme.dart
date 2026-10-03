@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 @immutable
 class AppTextTheme extends ThemeExtension<AppTextTheme> {
+  final TextStyle font12Medium;
+  final TextStyle font12Bold;
+  final TextStyle font16Regular;
   final TextStyle font16Medium;
   final TextStyle font16Bold;
   final TextStyle font18Regular;
@@ -17,7 +20,10 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
   final TextStyle font40Black;
 
   const AppTextTheme({
+    required this.font12Medium,
+    required this.font12Bold,
     required this.font16Bold,
+    required this.font16Regular,
     required this.font16Medium,
     required this.font18SemiBold,
     required this.font18Regular,
@@ -34,7 +40,10 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
 
   @override
   ThemeExtension<AppTextTheme> copyWith({
+    TextStyle? font12Medium,
+    TextStyle? font12Bold,
     TextStyle? font16Bold,
+    TextStyle? font16Regular,
     TextStyle? font16Medium,
     TextStyle? font18SemiBold,
     TextStyle? font18Regular,
@@ -49,7 +58,10 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
     TextStyle? font40Black,
   }) {
     return AppTextTheme(
+      font12Medium: font12Medium ?? this.font12Medium,
+      font12Bold: font12Bold ?? this.font12Bold,
       font16Bold: font16Bold ?? this.font16Bold,
+      font16Regular: font16Regular ?? this.font16Regular,
       font16Medium: font16Medium ?? this.font16Medium,
       font18SemiBold: font18SemiBold ?? this.font18SemiBold,
       font18Regular: font18Regular ?? this.font18Regular,
@@ -70,6 +82,9 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
       covariant ThemeExtension<AppTextTheme>? other, double t) {
     if (other is! AppTextTheme) return this;
     return AppTextTheme(
+      font12Medium: TextStyle.lerp(font12Medium, other.font12Medium, t)!,
+      font12Bold: TextStyle.lerp(font12Bold, other.font12Bold, t)!,
+      font16Regular: TextStyle.lerp(font16Regular, other.font16Regular, t)!,
       font16Medium: TextStyle.lerp(font16Medium, other.font16Medium, t)!,
       font16Bold: TextStyle.lerp(font16Bold, other.font16Bold, t)!,
       font18Regular: TextStyle.lerp(font18Regular, other.font18Regular, t)!,
@@ -88,6 +103,9 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
 
   AppTextTheme withColor(Color color) {
     return AppTextTheme(
+      font12Medium: font12Medium.copyWith(color: color),
+      font12Bold: font12Bold.copyWith(color: color),
+      font16Regular: font16Regular.copyWith(color: color),
       font16Medium: font16Medium.copyWith(color: color),
       font16Bold: font16Bold.copyWith(color: color),
       font18SemiBold: font18SemiBold.copyWith(color: color),

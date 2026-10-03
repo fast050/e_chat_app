@@ -8,20 +8,22 @@ Sections marked **(not set up yet)** describe rules for new work that need a one
 - **Every new feature or logic change ships with tests**, and `flutter test` must pass in full (not just the new tests) before the work is done. See Testing.
 - **No secrets in the app.** Anything bundled in the app (code, `.env`, `--dart-define`) is readable by anyone with the APK/IPA. Secrets live server-side only. See Security.
 - **Minimize rebuilds.** `StatelessWidget` + `const` by default, `BlocBuilder`/`BlocSelector` wrapped around the smallest possible subtree. See UI & Performance.
-- **Reuse before creating.** Check `lib/core/widgets/`, `features/*/shared/widgets/` and the Flutter SDK before building a widget. Change behavior in one place, not in copies.
+- **Reuse before creating.** Check `lib/core/widgets/`, the feature's `ui/shared/` and screen folders, and the Flutter SDK before building a widget. Change behavior in one place, not in copies.
+- **Split `ui/` by screen; split `data/` and `domain/` by what the data is about — never by screen.** Screens of one feature share one data layer and one domain layer. See [Feature Module Shape](#feature-module-shape-target-pattern).
+- **A new screen is the default; a new feature needs approval.** See [New Screen or New Feature?](#new-screen-or-new-feature).
 - State management is Cubit-only (`flutter_bloc`'s `Cubit<T>`). `Bloc` is never used — don't introduce it.
 - Every Cubit is registered with `getIt.registerFactory<XCubit>()` in `lib/core/di/injection_container.dart`, then provided via `BlocProvider`/`MultiBlocProvider` inside the matching `case` in `lib/core/routing/app_router.dart`. That's the only wiring point — there is no app-wide provider in `main.dart`.
 - Navigate via the `BuildContext` extensions in `lib/core/helper/extenstions.dart` (`context.pushNamed`, `.pushReplacementNamed`, `.pushNamedAndRemoveUntil`, `.pop()`), not raw `Navigator.of(context)` — except popping a locally-opened dialog/modal sheet with a result value, which uses `Navigator.of(context).pop(value)` directly (see `country_picker.dart`).
 - Colors and text styles always come from `Theme.of(context).extension<AppTextTheme>()!` / `.extension<AppSemanticColors>()!`. Sizes always use `flutter_screenutil` (`.w`, `.h`, `.r`). Never hardcode either.
 - New simple Cubits report errors with a `UiError? error` field + `listenWhen: (a, b) => a.error != b.error` (see State Management → Error Handling). Multi-stage async flows (OTP-style) use the sealed event-stream pattern instead. Don't use the old `errorMessage` + `snackBarEventId` counter idiom in new code.
 - **Never use code generation.** No `freezed`, `json_serializable`, `retrofit`, `build_runner`, or any package that needs generated `.g.dart`/`.freezed.dart` files — now or later. Hand-write `fromJson`/`toJson`/`copyWith` in plain Dart classes (see Entities & JSON). `dio`, `easy_localization`, `intl` are also declared but unused — don't reach for them; use direct `SupabaseClient` calls like the rest of the codebase.
-- New cross-cutting utility functions go in `lib/core/helper/`, not a new `core/utils/` folder.
+- **`core/` is only for code used by several features.** Anything owned by one feature (or shown in one place, like the bottom nav bar) lives in a feature. See [Where Does New Code Go?](#where-does-new-code-go). Never create a `core/utils/` folder.
 - Don't silently "fix" existing typos (`onbording`, `OTPEven`, `extenstions.dart`, `navgiateTo`, etc.) as a drive-by inside unrelated work, and don't imitate them in new identifiers either.
-- Don't mass-refactor `onbording/`/`splash/` to match the target feature shape in this doc just because they're inconsistent with it — only new features need to follow it.
+- Don't mass-refactor `auth/`/`onbording/`/`splash/` to match the target feature shape in this doc just because they're inconsistent with it — only new features need to follow it.
 
 ## Tech Stack
 
-**Actually wired up:** `flutter_bloc` (Cubit), `get_it`, `supabase_flutter`, `flutter_dotenv`, `shared_preferences`, `flutter_screenutil`, `google_fonts`, `flutter_svg`, `image_picker`, `phone_numbers_parser`, `country_flags_pro`.
+**Actually wired up:** `flutter_bloc` (Cubit), `get_it`, `supabase_flutter`, `flutter_dotenv`, `shared_preferences`, `flutter_screenutil`, `google_fonts`, `flutter_svg`, `image_picker`, `phone_numbers_parser`, `country_flags_pro`, `cached_network_image` (chat avatars).
 
 **Declared in `pubspec.yaml`, zero real usage in `lib/` — dormant, not conventions:** `freezed` / `freezed_annotation`, `json_annotation` / `json_serializable`, `dio`, `retrofit` / `retrofit_generator`, `pretty_dio_logger`, `easy_localization`, `intl`, `flutter_native_splash`. No `build_runner` dev-dependency and no `.g.dart`/`.freezed.dart` files exist anywhere — and that's intentional: **code generation is banned in this project.** Never add `build_runner` or suggest running it.
 
@@ -47,13 +49,15 @@ lib/
 ├── e_chat_app.dart        # ScreenUtilInit > MaterialApp(onGenerateRoute: AppRouter.generateRoute)
 ├── core/
 │   ├── di/                # injection_container.dart — setupAppInstances(), single flat function
-│   ├── helper/            # app_config.dart (env), extenstions.dart [sic] (BuildContext nav) + new cross-cutting utils go here
+│   ├── helper/            # app_config.dart (env), extenstions.dart [sic] (BuildContext nav), ui_error.dart, api_logger.dart — multi-feature helpers only
 │   ├── local/             # LocalStore abstraction (SharedPreferences) + a full mini feature-shaped slice for country codes
 │   ├── routing/           # app_router.dart (switch on route name), routes.dart (Routes string constants)
 │   ├── theme/             # ThemeExtension pattern: AppTextTheme, AppSemanticColors, AppColors, AppGradients, AppFontWeight
-│   └── widgets/           # 8 flat, truly cross-feature primitives only (buttons, checkbox, clickable text, countdown timer)
+│   └── widgets/           # truly cross-feature primitives only (buttons, checkbox, clickable text, countdown timer)
 └── features/
-    ├── auth/              # most complete feature — treat as the target shape (see below)
+    ├── auth/              # largest feature; login/register sub-flows + shared/ steps
+    ├── bottom_nav/        # app shell: AppBottomNavBar only (no data/domain)
+    ├── chats/             # cleanest example of the target shape — copy this one (see below)
     ├── onbording/         # [sic] — lighter, doesn't fully match the target shape
     └── splash/            # flattest — no data/domain layers, borrows other features' repositories directly
 ```
@@ -73,45 +77,104 @@ No global `MultiBlocProvider`, no `runZonedGuarded`/`FlutterError.onError`, no o
 
 ## Feature Module Shape (Target Pattern)
 
-New features should follow the shape distilled from `auth/` (the most complete existing feature):
+The idea: screens are tables in a restaurant, `data/` + `domain/` are the kitchen. One kitchen per feature, not one per table.
+
+New features should follow the shape of `features/chats/`:
 ```
 features/<feature>/
-├── data/
+├── data/                                # ONE data layer for the whole feature
 │   └── <name>_repository_impl.dart      # implements the domain contract, talks to SupabaseClient/LocalStore directly
-├── domain/
+├── domain/                              # ONE domain layer for the whole feature
 │   ├── entities/                        # plain Dart classes with hand-written fromJson/toJson — no codegen
 │   └── repo/
 │       └── <name>_repository.dart       # abstract interface class <Name>Repository { ... }
-└── ui/  (or per-subflow, e.g. login/ui + register/ui + shared/logic)
-    ├── logic/
-    │   ├── <name>_cubit.dart
-    │   └── <name>_state.dart
-    └── ui/
-        ├── <name>_screen.dart           # registered against a Route
-        └── <name>_view.dart             # sub-section swapped via IndexedStack/switch, not independently routed
+└── ui/
+    ├── <screen>/                        # one folder per screen
+    │   ├── <screen>_screen.dart         # registered against a Route
+    │   ├── <name>_view.dart             # (optional) sub-section swapped via IndexedStack/switch, not routed
+    │   ├── logic/
+    │   │   ├── <name>_cubit.dart
+    │   │   └── <name>_state.dart
+    │   ├── widgets/                     # widgets used only by this screen
+    │   └── helper/                      # helpers used only by this screen
+    └── shared/                          # used by two or more screens of this feature
+        ├── widgets/
+        ├── logic/
+        └── helper/
 ```
 
-Reality check — this is a target for *new* work, not a retroactive rule:
-- `auth/` itself duplicates `logic/`+`ui/` per sub-flow (`login/ui`, `register/ui`, `auth/ui/logic`, `shared/logic/<step>/`) rather than one flat pair.
+Example — the chats feature:
+```
+chats/
+├── data/              # chat + friend + group repos, shared by all screens below
+├── domain/
+└── ui/
+    ├── chats_list/    # chats_screen.dart + its logic/ and widgets/
+    ├── add_friend/    # add_friend_screen.dart + its logic/ and widgets/
+    ├── create_group/  # create_group_screen.dart + its logic/ and widgets/
+    └── shared/        # e.g. a user tile used by add_friend and create_group
+```
+
+Rules:
+- **`data/` and `domain/` are split by what the data is about** (chats, users, groups), **never by screen.** Don't create `add_friend/data/` or `create_group/domain/`. Repositories aren't tied to screens — several Cubits can use the same repository.
+- **`ui/` is split by screen.** Each screen folder holds its screen file, `logic/`, `widgets/` and (if needed) `helper/`.
+- A file used by **one** screen stays in that screen's folder. A file used by **two or more** screens of the feature goes in `ui/shared/`. Start in the screen folder; move to `shared/` only when a second screen actually needs it.
+- A feature with a **single screen** keeps `ui/` flat (`<name>_screen.dart`, `logic/`, `widgets/`, `helper/` directly under `ui/`). Regroup into screen folders when the second screen arrives.
+- Don't create empty folders.
+
+### New Screen or New Feature?
+
+Create a new feature only when the part has **its own data** (its own endpoints/tables, entities, repository) **and could work without the parent feature**. Otherwise it's a new screen folder inside the existing feature.
+
+- Add Friend and Create Group use the same users/chats/groups data as the chats list → screens inside `chats/`.
+- If "friends" later grows friend requests, a block list or contacts sync → it becomes `lib/features/friends/` with its own `data/`, `domain/`, `ui/`.
+
+If something looks like it meets this bar, say so and ask before splitting. A new screen is the default; a new feature needs approval.
+
+### Reality check
+
+This is a target for *new* work, not a retroactive rule:
+- `auth/` duplicates `logic/`+`ui/` per sub-flow (`login/ui`, `register/ui`, `auth/ui/logic`, `shared/logic/<step>/`), and its `shared/` folder sits at the feature root (`features/auth/shared/`) instead of `ui/shared/`. Leave it; new features use `ui/shared/`.
 - `onbording/` has a typo'd `date/` folder instead of `data/`.
 - `splash/` skips `data`/`domain` entirely and borrows `OnboardingRepository`/`AuthRepository` directly — cross-feature domain dependencies like this are fine.
 
 No use-case/interactor layer exists anywhere — Cubits call repository interfaces directly.
 
+## Where Does New Code Go?
+
+`core/` is only for code **several features** use. Everything else lives in a feature. Check in order:
+
+| What you're adding | Where it goes |
+|---|---|
+| Widget reused by several features (button, checkbox, text field) | `lib/core/widgets/` |
+| Helper/util used by several features | `lib/core/helper/` |
+| Widget/logic/helper used by two or more screens of one feature | `features/<feature>/ui/shared/` |
+| Widget used only by one screen | `features/<feature>/ui/<screen>/widgets/` |
+| Cubit + state for one screen | `features/<feature>/ui/<screen>/logic/` |
+| Helper used only by one screen (formatters, UI mappers) | `features/<feature>/ui/<screen>/helper/` |
+| Entity, repository contract, repository impl | `features/<feature>/domain/` and `data/` — shared by all the feature's screens |
+| Widget/logic shared between auth's login + register sub-flows | `features/auth/shared/` (existing layout, auth only) |
+| App-shell piece shown once (bottom nav bar, top bar, drawer) | its own feature, e.g. `features/bottom_nav/ui/` |
+
+- **Start small, promote on real need:** screen folder → `ui/shared/` when a second screen needs it → `core/` when a second feature needs it. Never "maybe later".
+- **"Shown on many screens" ≠ shared.** The bottom nav bar appears everywhere but is one app-shell piece, so it's a feature, not a `core/widgets/` primitive.
+- Examples: `chat_time_format.dart` is used only by the chats list, so it lives in `features/chats/ui/chats_list/helper/`, not `core/helper/`; `features/bottom_nav/ui/app_bottom_nav_bar.dart`.
+
 ## Recipe: Adding a New Feature or Screen
 
+0. **Decide: new screen or new feature?** (see [New Screen or New Feature?](#new-screen-or-new-feature)). For a new screen in an existing feature, reuse the feature's `data/`/`domain/` — add to them only what's missing (steps 1–3), don't create a second set.
 1. `domain/entities/` — plain Dart classes for anything new the feature needs.
 2. `domain/repo/<name>_repository.dart` — `abstract interface class <Name>Repository { ... }`.
 3. `data/<name>_repository_impl.dart` — `class <Name>RepositoryImpl implements <Name>Repository`, talking to `SupabaseClient`/`LocalStore` directly.
-4. `logic/<name>_cubit.dart` + `<name>_state.dart` — paired, same folder (see State Management below).
-5. `ui/<name>_screen.dart` (+ `_view.dart` per sub-section if needed). Check existing widgets first (see UI & Performance).
+4. `ui/<screen>/logic/<name>_cubit.dart` + `<name>_state.dart` — paired, same folder (see State Management below).
+5. `ui/<screen>/<screen>_screen.dart` (+ `_view.dart` per sub-section if needed). Check existing widgets first (see UI & Performance).
 6. Register in `lib/core/di/injection_container.dart`: `registerLazySingleton` for the repo, `registerFactory` for the cubit.
 7. Add a `Routes.<name>` constant in `lib/core/routing/routes.dart`, and a matching `case` in `lib/core/routing/app_router.dart` returning `MaterialPageRoute(builder: (_) => BlocProvider(create: (_) => getIt<XCubit>(), child: const XScreen()))`.
 8. **Tests** — Cubit test (success + failure for every public method), `fromJson` test if the entity has one. See Testing.
 9. **Security check** — new tables/buckets have RLS policies; no secrets added. See Security.
 10. Run `flutter analyze` and `flutter test` — both must be clean.
 
-> `Routes.home` already exists as a constant but has **no case** in `AppRouter.generateRoute` yet — it currently falls through to the "No route defined" default. Adding the home/chat feature means doing steps 6-7 for it.
+> `Routes.home` opens `ChatsScreen` (login and splash navigate there).
 
 ## State Management
 
@@ -238,6 +301,8 @@ class AuthRepositoryImpl implements AuthRepository {
 `SupabaseClient` is injected directly into repository constructors and called on directly (`_supabase.auth.signInWithOtp(...)`, `.verifyOTP(...)`, `.currentUser`) — there's no `core/network/` wrapper, and `dio`/`retrofit` (declared dependencies) aren't used anywhere.
 
 Keep repository impls thin: make the Supabase call, map the result. Put mapping in the entity (`fromJson`) so it's testable without Supabase.
+
+Repositories are named after the data they own (`ChatRepository`, `UserRepository`), not after a screen (`AddFriendRepository`). Several screens' Cubits can depend on the same repository.
 
 ## Entities & JSON (hand-written, no codegen)
 
@@ -380,7 +445,8 @@ or `buildWhen: (prev, curr) => prev.messages != curr.messages`.
 Before writing a widget, check in this order:
 1. **Flutter SDK** — e.g. `AnimatedSwitcher`, `AnimatedOpacity`, `RefreshIndicator`, `SliverAppBar`, `showModalBottomSheet`, `Dismissible`, `ListView.separated`. Don't rebuild these from scratch.
 2. **`lib/core/widgets/`** — cross-feature primitives (buttons, checkbox, clickable text, countdown timer).
-3. **`features/<feature>/shared/widgets/`** — feature-level reusable widgets.
+3. **`features/<feature>/ui/shared/widgets/`** — widgets shared by the feature's screens (in auth: `features/auth/shared/`).
+4. **The other screen folders of the same feature** (`features/<feature>/ui/<screen>/widgets/`) — if another screen already has what you need, move it to `ui/shared/` and use it from both; don't copy it and don't import across screen folders.
 
 If an existing widget almost fits, add a parameter to it instead of copying it — so a change happens in one place. Only then create a new one.
 
@@ -392,11 +458,11 @@ A `_widget.dart` file is a Bloc-connected wrapper around a same-named "dumb" wid
 
 Follow this split for new reusable, Cubit-aware UI pieces. The dumb widget is easy to reuse and to widget-test.
 
-`lib/core/widgets/` holds only the 8 truly cross-feature primitives. Feature-specific reusable widgets belong under `features/<feature>/shared/widgets/` instead — don't add feature-specific widgets to `core/widgets/`.
+`lib/core/widgets/` holds only truly cross-feature primitives. For everything else see [Where Does New Code Go?](#where-does-new-code-go).
 
 ## Packages: Build It or Add It?
 
-**Write it yourself** when it's small and clear — roughly one file, no platform code, no security/crypto logic (e.g. a debouncer, a validator, a simple formatter). Put it in `lib/core/helper/`.
+**Write it yourself** when it's small and clear — roughly one file, no platform code, no security/crypto logic (e.g. a debouncer, a validator, a simple formatter). Put it in `lib/core/helper/` if several features use it, otherwise inside the feature (see [Where Does New Code Go?](#where-does-new-code-go)).
 
 **Use a package** when doing it yourself would be complex, spread over many files, need platform code, or touch security (e.g. secure storage, image caching, image compression).
 
@@ -418,6 +484,7 @@ Follow this split for new reusable, Cubit-aware UI pieces. The dumb widget is ea
 ## Naming Conventions
 
 - Files: snake_case always. Classes: PascalCase matching the filename.
+- Screen folders: snake_case, named after the screen (`add_friend/`, `create_group/`, `chats_list/`).
 - Imports are always absolute `package:e_chat_app/...` — never relative (`../`), even for same-folder siblings.
 - Suffix glossary:
   - `_repository` / `_repository_impl` — domain contract / data-layer implementation.
@@ -442,14 +509,14 @@ Purpose: every time a feature is added or logic changes, the full test suite pro
 | Changed Cubit logic | Tests for the changed behavior; if the Cubit had no tests, first add tests for its **current** behavior, then change it |
 | Bug fix | A test that fails before the fix and passes after |
 | Entity with `fromJson`/`toJson` | Full JSON + JSON with optional fields missing |
-| Helper in `core/helper/` | Plain unit tests of inputs → outputs |
+| Helper (in `core/helper/` or a feature's `helper/` folder) | Plain unit tests of inputs → outputs |
 | Reusable dumb widget | Widget test for its main states/callbacks (optional for screens) |
 
 ### How
 - **Cubits:** build them directly with a mocked repository — never through `getIt`. The repository interface exists exactly so it can be mocked.
 - **Repository impls:** keep them thin (see Repositories) and don't mock Supabase query-builder chains — it's brittle and tests nothing real. Test the mapping in the entity instead. Auth calls (`_supabase.auth`) can be mocked with `mocktail` if needed.
 - **States have no `==`**, so assert on fields with `isA<X>().having(...)`, never `equals(XState(...))`.
-- Tests live in `test/`, mirroring `lib/`: `lib/features/auth/.../auth_method_cubit.dart` → `test/features/auth/.../auth_method_cubit_test.dart`.
+- Tests live in `test/`, mirroring `lib/`: `lib/features/auth/.../auth_method_cubit.dart` → `test/features/auth/.../auth_method_cubit_test.dart`. When a file moves in `lib/`, its test moves with it.
 - Shared fakes/helpers go in `test/helpers/`.
 
 ### Example: Cubit with no dependencies
@@ -520,5 +587,6 @@ Before reporting a task as finished:
 - [ ] No secrets added anywhere; new tables/buckets have RLS policies.
 - [ ] `StatelessWidget` + `const` where possible; `BlocBuilder`/`BlocSelector` scoped to the smallest subtree.
 - [ ] Existing widgets reused/extended instead of duplicated.
+- [ ] New files are in the right place: screen folder, `ui/shared/`, or `core/` — and no per-screen `data/`/`domain/` was created.
 - [ ] Simplest working solution; comments only where they explain *why*.
 - [ ] Any new dependency listed in the summary.

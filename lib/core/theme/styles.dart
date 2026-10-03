@@ -9,6 +9,18 @@ import 'package:google_fonts/google_fonts.dart';
   black : w900
 */
 final appTextThemeValue = AppTextTheme(
+  font12Medium: GoogleFonts.roboto(
+    fontSize: 12,
+    fontWeight: AppFontWeight.medium,
+  ),
+  font12Bold: GoogleFonts.roboto(
+    fontSize: 12,
+    fontWeight: AppFontWeight.bold,
+  ),
+  font16Regular: GoogleFonts.roboto(
+    fontSize: 16,
+    fontWeight: AppFontWeight.regular,
+  ),
   font16Medium: GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: AppFontWeight.medium,
@@ -29,10 +41,8 @@ final appTextThemeValue = AppTextTheme(
     fontSize: 20,
     fontWeight: AppFontWeight.regular,
   ),
-  font20Medium: GoogleFonts.roboto(
-    fontSize: 20,
-    fontWeight: AppFontWeight.medium
-  ),
+  font20Medium:
+      GoogleFonts.roboto(fontSize: 20, fontWeight: AppFontWeight.medium),
   font22Black: GoogleFonts.roboto(
     fontSize: 22,
     fontWeight: AppFontWeight.black,
@@ -53,7 +63,7 @@ final appTextThemeValue = AppTextTheme(
     fontSize: 35,
     fontWeight: AppFontWeight.bold,
   ),
-   font39Bold: GoogleFonts.roboto(
+  font39Bold: GoogleFonts.roboto(
     fontSize: 39,
     fontWeight: AppFontWeight.bold,
   ),
