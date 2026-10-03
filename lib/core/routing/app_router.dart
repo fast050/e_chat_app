@@ -9,8 +9,12 @@ import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_inpu
 import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/auth_screen.dart';
+import 'package:e_chat_app/features/chats/ui/add_friend_screen.dart';
 import 'package:e_chat_app/features/chats/ui/chats_screen.dart';
+import 'package:e_chat_app/features/chats/ui/create_group_screen.dart';
+import 'package:e_chat_app/features/chats/ui/logic/add_friend_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/logic/chats_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/logic/create_group_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
 import 'package:e_chat_app/features/splash/logic/splash_done_cubit.dart';
@@ -57,6 +61,23 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => getIt<ChatsCubit>()..loadChats(),
             child: const ChatsScreen(),
+          ),
+        );
+      case Routes.addFriend:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<AddFriendCubit>()),
+              BlocProvider(create: (_) => getIt<CountryCodeCubit>()),
+            ],
+            child: const AddFriendScreen(),
+          ),
+        );
+      case Routes.createGroup:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<CreateGroupCubit>()..loadFriends(),
+            child: const CreateGroupScreen(),
           ),
         );
       default:

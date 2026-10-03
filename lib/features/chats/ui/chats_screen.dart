@@ -1,3 +1,5 @@
+import 'package:e_chat_app/core/helper/extenstions.dart';
+import 'package:e_chat_app/core/routing/routes.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
 import 'package:e_chat_app/features/bottom_nav/ui/app_bottom_nav_bar.dart';
@@ -6,6 +8,7 @@ import 'package:e_chat_app/features/chats/ui/logic/chats_state.dart';
 import 'package:e_chat_app/features/chats/ui/widgets/chat_list_tile.dart';
 import 'package:e_chat_app/features/chats/ui/widgets/chats_add_menu.dart';
 import 'package:e_chat_app/features/chats/ui/widgets/chats_header.dart';
+import 'package:e_chat_app/features/chats/ui/widgets/header_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,9 +88,14 @@ class _AddMenuOverlay extends StatelessWidget {
               top: chatsHeaderRowTop(context) + 51.h,
               right: 24.w,
               child: ChatsAddMenu(
-                // Add Friend / Create Group screens don't exist yet.
-                onAddFriend: cubit.closeAddMenu,
-                onCreateGroup: cubit.closeAddMenu,
+                onAddFriend: () {
+                  cubit.closeAddMenu();
+                  context.pushNamed(Routes.addFriend);
+                },
+                onCreateGroup: () {
+                  cubit.closeAddMenu();
+                  context.pushNamed(Routes.createGroup);
+                },
               ),
             ),
           ],

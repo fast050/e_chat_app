@@ -15,8 +15,14 @@ import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_inpu
 import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
 import 'package:e_chat_app/features/chats/data/chats_repository_impl.dart';
+import 'package:e_chat_app/features/chats/data/friends_repository_impl.dart';
+import 'package:e_chat_app/features/chats/data/groups_repository_impl.dart';
 import 'package:e_chat_app/features/chats/domain/repo/chats_repository.dart';
+import 'package:e_chat_app/features/chats/domain/repo/friends_repository.dart';
+import 'package:e_chat_app/features/chats/domain/repo/groups_repository.dart';
+import 'package:e_chat_app/features/chats/ui/logic/add_friend_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/logic/chats_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/logic/create_group_cubit.dart';
 import 'package:e_chat_app/features/onbording/date/onboarding_repository_impl.dart';
 import 'package:e_chat_app/features/onbording/domain/onboarding_repository.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
@@ -101,5 +107,16 @@ Future<void> setupAppInstances() async {
   getIt.registerLazySingleton<ChatsRepository>(() => ChatsRepositoryImpl());
   getIt.registerFactory<ChatsCubit>(
     () => ChatsCubit(getIt<ChatsRepository>()),
+  );
+  getIt.registerLazySingleton<FriendsRepository>(() => FriendsRepositoryImpl());
+  getIt.registerLazySingleton<GroupsRepository>(() => GroupsRepositoryImpl());
+  getIt.registerFactory<AddFriendCubit>(
+    () => AddFriendCubit(getIt<FriendsRepository>()),
+  );
+  getIt.registerFactory<CreateGroupCubit>(
+    () => CreateGroupCubit(
+      getIt<FriendsRepository>(),
+      getIt<GroupsRepository>(),
+    ),
   );
 }
