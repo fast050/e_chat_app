@@ -1,8 +1,8 @@
-import 'package:e_chat_app/features/chats/ui/chats_list/helper/chat_time_format.dart';
 import 'package:e_chat_app/core/helper/ui_error.dart';
 import 'package:e_chat_app/features/chats/domain/entities/chat.dart';
 import 'package:e_chat_app/features/chats/domain/repo/chats_repository.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/logic/chats_state.dart';
+import 'package:e_chat_app/features/chats/ui/shared/helper/chat_time_format.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -79,6 +79,7 @@ class ChatsCubit extends Cubit<ChatsState> {
               id: chat.id,
               name: chat.name,
               avatarUrl: chat.avatarUrl,
+              phoneNumber: chat.phoneNumber,
               lastMessage: chat.lastMessage,
               timeLabel: formatChatTime(chat.lastMessageAt, now: now),
               unreadCount: chat.unreadCount,

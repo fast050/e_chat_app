@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 class HeaderGlassButton extends StatelessWidget {
   final double size;
   final bool isHighlighted;
+  // Fill when highlighted; defaults to the translucent white used on the blue
+  // header. Light headers pass their own surface color.
+  final Color highlightColor;
   final VoidCallback? onTap;
   final Widget child;
 
@@ -14,6 +17,7 @@ class HeaderGlassButton extends StatelessWidget {
     required this.size,
     required this.child,
     this.isHighlighted = true,
+    this.highlightColor = AppColors.white20,
     this.onTap,
   });
 
@@ -29,7 +33,7 @@ class HeaderGlassButton extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: isHighlighted ? AppColors.white20 : Colors.transparent,
+          color: isHighlighted ? highlightColor : Colors.transparent,
           boxShadow: isHighlighted
               ? const [BoxShadow(color: Color(0x26000000), blurRadius: 20)]
               : const [],

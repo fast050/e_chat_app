@@ -1,4 +1,4 @@
-import 'package:e_chat_app/features/chats/ui/chats_list/helper/chat_time_format.dart';
+import 'package:e_chat_app/features/chats/ui/shared/helper/chat_time_format.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -18,5 +18,10 @@ void main() {
   test('pads single digits', () {
     expect(
         formatChatTime(DateTime(2026, 5, 1, 7, 5), now: now), '07:05  01/05');
+  });
+
+  test('formatMessageTime shows only the padded time, whatever the day', () {
+    expect(formatMessageTime(DateTime(2026, 5, 1, 7, 5)), '07:05');
+    expect(formatMessageTime(DateTime(2026, 9, 27, 22, 20)), '22:20');
   });
 }

@@ -17,6 +17,10 @@ final appTextThemeValue = AppTextTheme(
     fontSize: 12,
     fontWeight: AppFontWeight.bold,
   ),
+  font14Regular: GoogleFonts.roboto(
+    fontSize: 14,
+    fontWeight: AppFontWeight.regular,
+  ),
   font16Regular: GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: AppFontWeight.regular,

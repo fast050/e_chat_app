@@ -30,6 +30,7 @@ void main() {
             Chat(
               id: 'today',
               name: 'David Wayne',
+              phoneNumber: '+445092853022',
               lastMessage: 'Thanks!',
               lastMessageAt: DateTime(2026, 9, 27, 10, 25),
               unreadCount: 5,
@@ -46,7 +47,9 @@ void main() {
               (s) => s.chats.map((c) => c.id).toList(), 'ids', ['today', 'old'])
           .having((s) => s.chats.first.timeLabel, 'first label', '10:25')
           .having((s) => s.chats.last.timeLabel, 'last label', '07:55  01/05')
-          .having((s) => s.chats.first.unreadCount, 'unread', 5),
+          .having((s) => s.chats.first.unreadCount, 'unread', 5)
+          .having((s) => s.chats.first.phoneNumber, 'phone', '+445092853022')
+          .having((s) => s.chats.last.phoneNumber, 'missing phone', isNull),
     ],
   );
 

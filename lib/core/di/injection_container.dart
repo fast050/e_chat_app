@@ -19,9 +19,12 @@ import 'package:e_chat_app/features/chats/data/friends_repository_impl.dart';
 import 'package:e_chat_app/features/chats/data/groups_repository_impl.dart';
 import 'package:e_chat_app/features/chats/domain/repo/chats_repository.dart';
 import 'package:e_chat_app/features/chats/domain/repo/friends_repository.dart';
+import 'package:e_chat_app/features/chats/data/messages_repository_impl.dart';
 import 'package:e_chat_app/features/chats/domain/repo/groups_repository.dart';
+import 'package:e_chat_app/features/chats/domain/repo/messages_repository.dart';
 import 'package:e_chat_app/features/chats/ui/add_friend/logic/add_friend_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/logic/chats_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/conversation/logic/conversation_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/create_group/logic/create_group_cubit.dart';
 import 'package:e_chat_app/features/onbording/date/onboarding_repository_impl.dart';
 import 'package:e_chat_app/features/onbording/domain/onboarding_repository.dart';
@@ -118,5 +121,11 @@ Future<void> setupAppInstances() async {
       getIt<FriendsRepository>(),
       getIt<GroupsRepository>(),
     ),
+  );
+  getIt.registerLazySingleton<MessagesRepository>(
+    () => MessagesRepositoryImpl(),
+  );
+  getIt.registerFactory<ConversationCubit>(
+    () => ConversationCubit(getIt<MessagesRepository>()),
   );
 }

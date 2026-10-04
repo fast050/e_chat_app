@@ -7,6 +7,7 @@ void main() {
       'id': 'c1',
       'name': 'David Wayne',
       'avatar_url': 'https://example.com/a.png',
+      'phone_number': '+445092853022',
       'last_message': 'Hi',
       'last_message_at': '2026-09-27T10:25:00.000',
       'unread_count': 5,
@@ -15,6 +16,7 @@ void main() {
     expect(chat.id, 'c1');
     expect(chat.name, 'David Wayne');
     expect(chat.avatarUrl, 'https://example.com/a.png');
+    expect(chat.phoneNumber, '+445092853022');
     expect(chat.lastMessage, 'Hi');
     expect(chat.lastMessageAt, DateTime(2026, 9, 27, 10, 25));
     expect(chat.unreadCount, 5);
@@ -28,6 +30,7 @@ void main() {
     });
 
     expect(chat.avatarUrl, isNull);
+    expect(chat.phoneNumber, isNull);
     expect(chat.lastMessage, '');
     expect(chat.unreadCount, 0);
   });
