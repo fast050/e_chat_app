@@ -158,7 +158,7 @@ No use-case/interactor layer exists anywhere — Cubits call repository interfac
 
 - **Start small, promote on real need:** screen folder → `ui/shared/` when a second screen needs it → `core/` when a second feature needs it. Never "maybe later".
 - **"Shown on many screens" ≠ shared.** The bottom nav bar appears everywhere but is one app-shell piece, so it's a feature, not a `core/widgets/` primitive.
-- Examples: `chat_time_format.dart` is used only by the chats list, so it lives in `features/chats/ui/chats_list/helper/`, not `core/helper/`; `features/bottom_nav/ui/app_bottom_nav_bar.dart`.
+- Examples: `chat_time_format.dart` is used by the chats list and the conversation screen, so it lives in `features/chats/ui/shared/helper/`, not `core/helper/`; `features/bottom_nav/ui/app_bottom_nav_bar.dart`.
 
 ## Recipe: Adding a New Feature or Screen
 

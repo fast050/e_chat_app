@@ -6,6 +6,7 @@ class ChatPreview {
   final String id;
   final String name;
   final String? avatarUrl;
+  final String? phoneNumber;
   final String lastMessage;
   final String timeLabel;
   final int unreadCount;
@@ -17,6 +18,7 @@ class ChatPreview {
     required this.timeLabel,
     required this.unreadCount,
     this.avatarUrl,
+    this.phoneNumber,
   });
 }
 

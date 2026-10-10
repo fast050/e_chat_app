@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 const _testTextTheme = AppTextTheme(
   font12Medium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
   font12Bold: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+  font14Regular: TextStyle(fontSize: 14),
   font16Regular: TextStyle(fontSize: 16),
   font16Medium: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
   font16Bold: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),

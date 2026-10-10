@@ -5,4 +5,5 @@ class Routes {
   static const String chats = "/chats";
   static const String addFriend = '/addFriend';
   static const String createGroup = '/createGroup';
+  static const String conversation = '/conversation';
 }

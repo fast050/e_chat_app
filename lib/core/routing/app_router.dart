@@ -15,6 +15,9 @@ import 'package:e_chat_app/features/chats/ui/create_group/create_group_screen.da
 import 'package:e_chat_app/features/chats/ui/add_friend/logic/add_friend_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/logic/chats_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/create_group/logic/create_group_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/conversation/conversation_screen.dart';
+import 'package:e_chat_app/features/chats/ui/conversation/logic/conversation_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/shared/helper/conversation_args.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
 import 'package:e_chat_app/features/onbording/ui/onbording_screen.dart';
 import 'package:e_chat_app/features/splash/logic/splash_done_cubit.dart';
@@ -78,6 +81,15 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => getIt<CreateGroupCubit>()..loadFriends(),
             child: const CreateGroupScreen(),
+          ),
+        );
+      case Routes.conversation:
+        final args = settings.arguments as ConversationArgs;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                getIt<ConversationCubit>()..loadMessages(args.chatId),
+            child: ConversationScreen(args: args),
           ),
         );
       default:

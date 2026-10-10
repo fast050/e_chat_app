@@ -8,6 +8,7 @@ import 'package:e_chat_app/features/chats/ui/chats_list/logic/chats_state.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/widgets/chat_list_tile.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/widgets/chats_add_menu.dart';
 import 'package:e_chat_app/features/chats/ui/chats_list/widgets/chats_header.dart';
+import 'package:e_chat_app/features/chats/ui/shared/helper/conversation_args.dart';
 import 'package:e_chat_app/features/chats/ui/shared/widgets/header_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -149,6 +150,15 @@ class _ChatsList extends StatelessWidget {
           lastMessage: chat.lastMessage,
           timeLabel: chat.timeLabel,
           unreadCount: chat.unreadCount,
+          onTap: () => context.pushNamed(
+            Routes.conversation,
+            arguments: ConversationArgs(
+              chatId: chat.id,
+              name: chat.name,
+              avatarUrl: chat.avatarUrl,
+              phoneNumber: chat.phoneNumber,
+            ),
+          ),
         );
       },
     );

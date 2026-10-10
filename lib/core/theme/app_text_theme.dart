@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppTextTheme extends ThemeExtension<AppTextTheme> {
   final TextStyle font12Medium;
   final TextStyle font12Bold;
+  final TextStyle font14Regular;
   final TextStyle font16Regular;
   final TextStyle font16Medium;
   final TextStyle font16Bold;
@@ -22,6 +23,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
   const AppTextTheme({
     required this.font12Medium,
     required this.font12Bold,
+    required this.font14Regular,
     required this.font16Bold,
     required this.font16Regular,
     required this.font16Medium,
@@ -42,6 +44,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
   ThemeExtension<AppTextTheme> copyWith({
     TextStyle? font12Medium,
     TextStyle? font12Bold,
+    TextStyle? font14Regular,
     TextStyle? font16Bold,
     TextStyle? font16Regular,
     TextStyle? font16Medium,
@@ -60,6 +63,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
     return AppTextTheme(
       font12Medium: font12Medium ?? this.font12Medium,
       font12Bold: font12Bold ?? this.font12Bold,
+      font14Regular: font14Regular ?? this.font14Regular,
       font16Bold: font16Bold ?? this.font16Bold,
       font16Regular: font16Regular ?? this.font16Regular,
       font16Medium: font16Medium ?? this.font16Medium,
@@ -84,6 +88,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
     return AppTextTheme(
       font12Medium: TextStyle.lerp(font12Medium, other.font12Medium, t)!,
       font12Bold: TextStyle.lerp(font12Bold, other.font12Bold, t)!,
+      font14Regular: TextStyle.lerp(font14Regular, other.font14Regular, t)!,
       font16Regular: TextStyle.lerp(font16Regular, other.font16Regular, t)!,
       font16Medium: TextStyle.lerp(font16Medium, other.font16Medium, t)!,
       font16Bold: TextStyle.lerp(font16Bold, other.font16Bold, t)!,
@@ -105,6 +110,7 @@ class AppTextTheme extends ThemeExtension<AppTextTheme> {
     return AppTextTheme(
       font12Medium: font12Medium.copyWith(color: color),
       font12Bold: font12Bold.copyWith(color: color),
+      font14Regular: font14Regular.copyWith(color: color),
       font16Regular: font16Regular.copyWith(color: color),
       font16Medium: font16Medium.copyWith(color: color),
       font16Bold: font16Bold.copyWith(color: color),
