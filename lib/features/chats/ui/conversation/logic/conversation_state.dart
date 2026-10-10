@@ -7,12 +7,14 @@ class MessageItem {
   final String text;
   final String timeLabel;
   final bool isMine;
+  final String? imageUrl;
 
   const MessageItem({
     required this.id,
     required this.text,
     required this.timeLabel,
     required this.isMine,
+    this.imageUrl,
   });
 }
 
