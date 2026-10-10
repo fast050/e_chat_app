@@ -1,5 +1,6 @@
-/// Route arguments for `Routes.conversation`: what the header shows before any
-/// message has loaded.
+/// Route arguments for `Routes.conversation` and the screens opened from it
+/// (user info, media, protected chat, add to group): which chat, and what the
+/// header shows before anything has loaded.
 class ConversationArgs {
   final String chatId;
   final String name;

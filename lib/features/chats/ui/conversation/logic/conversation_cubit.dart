@@ -60,6 +60,7 @@ class ConversationCubit extends Cubit<ConversationState> {
         text: message.text,
         timeLabel: formatMessageTime(message.createdAt.toLocal()),
         isMine: message.senderId == _repository.currentUserId,
+        imageUrl: message.imageUrl,
       );
 
   void _emitError(String message, {ConversationStatus? status}) {

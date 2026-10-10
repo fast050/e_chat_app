@@ -14,7 +14,11 @@ import 'package:e_chat_app/features/auth/shared/logic/auth_phone_step/auth_phone
 import 'package:e_chat_app/features/auth/shared/widgets/otp_input/logic/otp_input_cubit.dart';
 import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
+import 'package:e_chat_app/features/chats/data/attachments_repository_impl.dart';
+import 'package:e_chat_app/features/chats/data/chat_settings_repository_impl.dart';
 import 'package:e_chat_app/features/chats/data/chats_repository_impl.dart';
+import 'package:e_chat_app/features/chats/domain/repo/attachments_repository.dart';
+import 'package:e_chat_app/features/chats/domain/repo/chat_settings_repository.dart';
 import 'package:e_chat_app/features/chats/data/friends_repository_impl.dart';
 import 'package:e_chat_app/features/chats/data/groups_repository_impl.dart';
 import 'package:e_chat_app/features/chats/domain/repo/chats_repository.dart';
@@ -26,6 +30,9 @@ import 'package:e_chat_app/features/chats/ui/add_friend/logic/add_friend_cubit.d
 import 'package:e_chat_app/features/chats/ui/chats_list/logic/chats_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/conversation/logic/conversation_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/create_group/logic/create_group_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/add_to_group/logic/add_to_group_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/shared/logic/chat_media_cubit.dart';
+import 'package:e_chat_app/features/chats/ui/shared/logic/chat_settings_cubit.dart';
 import 'package:e_chat_app/features/onbording/date/onboarding_repository_impl.dart';
 import 'package:e_chat_app/features/onbording/domain/onboarding_repository.dart';
 import 'package:e_chat_app/features/onbording/ui/logic/onboarding_cubit.dart';
@@ -127,5 +134,23 @@ Future<void> setupAppInstances() async {
   );
   getIt.registerFactory<ConversationCubit>(
     () => ConversationCubit(getIt<MessagesRepository>()),
+  );
+  getIt.registerLazySingleton<ChatSettingsRepository>(
+    () => ChatSettingsRepositoryImpl(),
+  );
+  getIt.registerLazySingleton<AttachmentsRepository>(
+    () => AttachmentsRepositoryImpl(),
+  );
+  getIt.registerFactory<ChatSettingsCubit>(
+    () => ChatSettingsCubit(getIt<ChatSettingsRepository>()),
+  );
+  getIt.registerFactory<ChatMediaCubit>(
+    () => ChatMediaCubit(
+      getIt<MessagesRepository>(),
+      getIt<AttachmentsRepository>(),
+    ),
+  );
+  getIt.registerFactory<AddToGroupCubit>(
+    () => AddToGroupCubit(getIt<GroupsRepository>()),
   );
 }

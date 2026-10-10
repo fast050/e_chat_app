@@ -56,6 +56,35 @@ void main() {
     );
 
     blocTest<ConversationCubit, ConversationState>(
+      'carries the image url of image messages',
+      build: () {
+        when(() => repo.fetchMessages('c1')).thenAnswer((_) async => [
+              message('1', 'david', 'Hello!', 10),
+              Message(
+                id: '2',
+                chatId: 'c1',
+                senderId: 'david',
+                text: '',
+                createdAt: DateTime(2026, 9, 27, 10, 12),
+                imageUrl: 'https://example.com/photo.png',
+              ),
+            ]);
+        return ConversationCubit(repo);
+      },
+      act: (cubit) => cubit.loadMessages('c1'),
+      skip: 1,
+      expect: () => [
+        isA<ConversationState>()
+            .having(
+              (s) => s.messages.first.imageUrl,
+              'image message',
+              'https://example.com/photo.png',
+            )
+            .having((s) => s.messages.last.imageUrl, 'text message', isNull),
+      ],
+    );
+
+    blocTest<ConversationCubit, ConversationState>(
       'emits the Supabase message on PostgrestException',
       build: () {
         when(() => repo.fetchMessages('c1')).thenThrow(
