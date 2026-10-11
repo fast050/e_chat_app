@@ -1,5 +1,5 @@
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/features/auth/shared/widgets/app_base_text_field.dart';
+import 'package:e_chat_app/features/auth/ui/shared/widgets/app_base_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

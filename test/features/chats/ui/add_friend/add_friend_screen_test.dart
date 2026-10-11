@@ -1,6 +1,6 @@
 import 'package:e_chat_app/core/local/country_code_local_source/domain/entities/country_code.dart';
 import 'package:e_chat_app/core/local/country_code_local_source/domain/repo/countries_code_repository.dart';
-import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/country_code_cubit.dart';
+import 'package:e_chat_app/features/auth/ui/shared/widgets/phone_input/logic/country_code_cubit.dart';
 import 'package:e_chat_app/features/chats/domain/entities/friend.dart';
 import 'package:e_chat_app/features/chats/ui/add_friend/add_friend_screen.dart';
 import 'package:e_chat_app/features/chats/ui/add_friend/logic/add_friend_cubit.dart';
