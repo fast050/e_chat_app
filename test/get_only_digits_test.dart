@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:e_chat_app/features/auth/shared/widgets/phone_input/logic/share_function.dart';
+import 'package:e_chat_app/features/auth/ui/shared/widgets/phone_input/logic/share_function.dart';
 
 void main() {
   test('getOnlyDigits strips non-digit characters', () {

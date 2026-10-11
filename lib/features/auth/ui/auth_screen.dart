@@ -1,7 +1,7 @@
-import 'package:e_chat_app/features/auth/login/ui/login_screen.dart';
-import 'package:e_chat_app/features/auth/register/ui/register_screen.dart';
-import 'package:e_chat_app/features/auth/ui/logic/auth_flow_cubit.dart';
-import 'package:e_chat_app/features/auth/ui/logic/auth_flow_state.dart';
+import 'package:e_chat_app/features/auth/ui/login/login_screen.dart';
+import 'package:e_chat_app/features/auth/ui/register/register_screen.dart';
+import 'package:e_chat_app/features/auth/ui/shared/logic/auth_flow/auth_flow_cubit.dart';
+import 'package:e_chat_app/features/auth/ui/shared/logic/auth_flow/auth_flow_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,7 +1,7 @@
 import 'package:country_flags_pro/country_flags_pro.dart';
 import 'package:e_chat_app/core/theme/app_text_theme.dart';
 import 'package:e_chat_app/core/theme/semantic_color.dart';
-import 'package:e_chat_app/features/auth/shared/widgets/phone_input/widget/phone_number_formatter.dart';
+import 'package:e_chat_app/features/auth/ui/shared/widgets/phone_input/widget/phone_number_formatter.dart';
 import 'package:e_chat_app/features/chats/ui/shared/widgets/outlined_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

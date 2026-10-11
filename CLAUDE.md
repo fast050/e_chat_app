@@ -19,7 +19,7 @@ Sections marked **(not set up yet)** describe rules for new work that need a one
 - **Never use code generation.** No `freezed`, `json_serializable`, `retrofit`, `build_runner`, or any package that needs generated `.g.dart`/`.freezed.dart` files — now or later. Hand-write `fromJson`/`toJson`/`copyWith` in plain Dart classes (see Entities & JSON). `dio`, `easy_localization`, `intl` are also declared but unused — don't reach for them; use direct `SupabaseClient` calls like the rest of the codebase.
 - **`core/` is only for code used by several features.** Anything owned by one feature (or shown in one place, like the bottom nav bar) lives in a feature. See [Where Does New Code Go?](#where-does-new-code-go). Never create a `core/utils/` folder.
 - Don't silently "fix" existing typos (`onbording`, `OTPEven`, `extenstions.dart`, `navgiateTo`, etc.) as a drive-by inside unrelated work, and don't imitate them in new identifiers either.
-- Don't mass-refactor `auth/`/`onbording/`/`splash/` to match the target feature shape in this doc just because they're inconsistent with it — only new features need to follow it.
+- Don't mass-refactor `onbording/`/`splash/` to match the target feature shape in this doc just because they're inconsistent with it — only new features need to follow it.
 
 ## Tech Stack
 
@@ -55,7 +55,7 @@ lib/
 │   ├── theme/             # ThemeExtension pattern: AppTextTheme, AppSemanticColors, AppColors, AppGradients, AppFontWeight
 │   └── widgets/           # truly cross-feature primitives only (buttons, checkbox, clickable text, countdown timer)
 └── features/
-    ├── auth/              # largest feature; login/register sub-flows + shared/ steps
+    ├── auth/              # one data/ + domain/; ui/ split into login/, register/, shared/
     ├── bottom_nav/        # app shell: AppBottomNavBar only (no data/domain)
     ├── chats/             # cleanest example of the target shape — copy this one (see below)
     ├── onbording/         # [sic] — lighter, doesn't fully match the target shape
@@ -134,7 +134,7 @@ If something looks like it meets this bar, say so and ask before splitting. A ne
 ### Reality check
 
 This is a target for *new* work, not a retroactive rule:
-- `auth/` duplicates `logic/`+`ui/` per sub-flow (`login/ui`, `register/ui`, `auth/ui/logic`, `shared/logic/<step>/`), and its `shared/` folder sits at the feature root (`features/auth/shared/`) instead of `ui/shared/`. Leave it; new features use `ui/shared/`.
+- `auth/` follows the target shape at the folder level (`data/`, `domain/`, `ui/login/`, `ui/register/`, `ui/shared/`), with leftovers inside `ui/`: `auth_screen.dart` sits at the `ui/` root because it hosts the login and register tabs, the `_step` files sit loose at the `ui/shared/` root, `ui/shared/logic/` has one sub-folder per cubit, and `otp_input/` / `phone_input/` under `ui/shared/widgets/` carry their own nested `logic/` + `widget/`. Leave those; don't copy them in new features.
 - `onbording/` has a typo'd `date/` folder instead of `data/`.
 - `splash/` skips `data`/`domain` entirely and borrows `OnboardingRepository`/`AuthRepository` directly — cross-feature domain dependencies like this are fine.
 
@@ -153,7 +153,6 @@ No use-case/interactor layer exists anywhere — Cubits call repository interfac
 | Cubit + state for one screen | `features/<feature>/ui/<screen>/logic/` |
 | Helper used only by one screen (formatters, UI mappers) | `features/<feature>/ui/<screen>/helper/` |
 | Entity, repository contract, repository impl | `features/<feature>/domain/` and `data/` — shared by all the feature's screens |
-| Widget/logic shared between auth's login + register sub-flows | `features/auth/shared/` (existing layout, auth only) |
 | App-shell piece shown once (bottom nav bar, top bar, drawer) | its own feature, e.g. `features/bottom_nav/ui/` |
 
 - **Start small, promote on real need:** screen folder → `ui/shared/` when a second screen needs it → `core/` when a second feature needs it. Never "maybe later".
@@ -445,7 +444,7 @@ or `buildWhen: (prev, curr) => prev.messages != curr.messages`.
 Before writing a widget, check in this order:
 1. **Flutter SDK** — e.g. `AnimatedSwitcher`, `AnimatedOpacity`, `RefreshIndicator`, `SliverAppBar`, `showModalBottomSheet`, `Dismissible`, `ListView.separated`. Don't rebuild these from scratch.
 2. **`lib/core/widgets/`** — cross-feature primitives (buttons, checkbox, clickable text, countdown timer).
-3. **`features/<feature>/ui/shared/widgets/`** — widgets shared by the feature's screens (in auth: `features/auth/shared/`).
+3. **`features/<feature>/ui/shared/widgets/`** — widgets shared by the feature's screens.
 4. **The other screen folders of the same feature** (`features/<feature>/ui/<screen>/widgets/`) — if another screen already has what you need, move it to `ui/shared/` and use it from both; don't copy it and don't import across screen folders.
 
 If an existing widget almost fits, add a parameter to it instead of copying it — so a change happens in one place. Only then create a new one.
