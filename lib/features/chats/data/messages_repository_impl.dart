@@ -38,18 +38,39 @@ class MessagesRepositoryImpl implements MessagesRepository {
 
   List<Message> _sampleMessages(String chatId) {
     final now = DateTime.now();
+    final lastMonth = DateTime(now.year, now.month - 1, 5);
+    final yesterday = DateTime(now.year, now.month, now.day - 1);
     var count = 0;
     // The sample chat ids double as the other user's id.
-    Message message(String senderId, int minute, int second, String text) =>
-        Message(
-          id: '$chatId-${++count}',
-          chatId: chatId,
-          senderId: senderId,
-          text: text,
-          createdAt: DateTime(now.year, now.month, now.day, 10, minute, second),
-        );
+    Message message(
+      String senderId,
+      int minute,
+      int second,
+      String text, {
+      DateTime? day,
+      String? imageUrl,
+    }) {
+      final date = day ?? now;
+      return Message(
+        id: '$chatId-${++count}',
+        chatId: chatId,
+        senderId: senderId,
+        text: text,
+        createdAt:
+            DateTime(date.year, date.month, date.day, 10, minute, second),
+        imageUrl: imageUrl,
+      );
+    }
+
+    String image(int seed) => 'https://picsum.photos/seed/chat$seed/400/400';
 
     return [
+      message(chatId, 0, 0, '', day: lastMonth, imageUrl: image(1)),
+      message(_me, 1, 0, '', day: lastMonth, imageUrl: image(2)),
+      message(chatId, 0, 0, '', day: yesterday, imageUrl: image(3)),
+      message(chatId, 1, 0, '', day: yesterday, imageUrl: image(4)),
+      message(_me, 2, 0, '', day: yesterday, imageUrl: image(5)),
+      message(_me, 3, 0, '', day: yesterday, imageUrl: image(6)),
       message(
         chatId,
         10,
@@ -72,6 +93,14 @@ class MessagesRepositoryImpl implements MessagesRepository {
       ),
       message(chatId, 11, 40, "I'll text you when I arrive."),
       message(_me, 12, 0, 'Great! 😊'),
+      message(
+        chatId,
+        13,
+        0,
+        "Hey there!\nI've arrived at your delivery address.",
+        imageUrl: image(7),
+      ),
+      message(_me, 14, 0, '', imageUrl: image(8)),
     ];
   }
 }

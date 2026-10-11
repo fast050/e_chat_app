@@ -27,7 +27,8 @@ const _testTextTheme = AppTextTheme(
 );
 
 extension PumpApp on WidgetTester {
-  Future<void> pumpApp(Widget child) {
+  /// [onGenerateRoute] serves the named routes [child] pushes.
+  Future<void> pumpApp(Widget child, {RouteFactory? onGenerateRoute}) {
     return pumpWidget(
       ScreenUtilInit(
         designSize: const Size(393, 852),
@@ -37,6 +38,7 @@ extension PumpApp on WidgetTester {
           theme: ThemeData(
             extensions: const [_testTextTheme, lightSemanticColors],
           ),
+          onGenerateRoute: onGenerateRoute,
           home: Scaffold(body: child),
         ),
       ),

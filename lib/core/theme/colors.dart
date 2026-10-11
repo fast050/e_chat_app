@@ -31,6 +31,14 @@ class AppColors {
   // Red
   static const Color red500 = Color(0xFFF44336);
 
+  // Accents: file-type badges and the chat color presets. Same in light and
+  // dark, so they are not semantic colors.
+  static const Color orange500 = Color(0xFFFFA319);
+  static const Color green500 = Color(0xFF57CA22);
+  static const Color rose500 = Color(0xFFFF1943);
+  static const Color indigo500 = Color(0xFF5569FF);
+  static const Color purple500 = Color(0xFF9655FF);
+
   // Base
   static const Color black = Color(0xFF292929);
   static const Color white = Color(0xFFFFFFFF);

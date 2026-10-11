@@ -8,6 +8,8 @@ class FriendCard extends StatelessWidget {
   final String name;
   final String phoneNumber;
   final String? avatarUrl;
+  // Replaces the single user avatar, e.g. with a group's stacked avatars.
+  final Widget? avatar;
   final Widget? trailing;
   final VoidCallback? onTap;
 
@@ -16,6 +18,7 @@ class FriendCard extends StatelessWidget {
     required this.name,
     required this.phoneNumber,
     this.avatarUrl,
+    this.avatar,
     this.trailing,
     this.onTap,
   });
@@ -31,7 +34,7 @@ class FriendCard extends StatelessWidget {
       onTap: onTap,
       child: Row(
         children: [
-          ChatAvatar(name: name, imageUrl: avatarUrl, size: 42.r),
+          avatar ?? ChatAvatar(name: name, imageUrl: avatarUrl, size: 42.r),
           SizedBox(width: 16.w),
           Expanded(
             child: Column(

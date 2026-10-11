@@ -7,11 +7,10 @@ import 'package:e_chat_app/features/chats/domain/entities/friend.dart';
 import 'package:e_chat_app/features/chats/ui/create_group/logic/create_group_cubit.dart';
 import 'package:e_chat_app/features/chats/ui/create_group/logic/create_group_state.dart';
 import 'package:e_chat_app/features/chats/ui/shared/widgets/friend_card.dart';
-import 'package:e_chat_app/features/chats/ui/shared/widgets/outlined_text_field.dart';
+import 'package:e_chat_app/features/chats/ui/shared/widgets/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 /// Content of the "Add members to group" bottom sheet. Needs a
 /// [CreateGroupCubit] above it.
@@ -39,20 +38,7 @@ class AddMembersSheet extends StatelessWidget {
             style: textStyle.font20Medium.copyWith(color: colors.textPrimary),
           ),
           SizedBox(height: 16.h),
-          OutlinedTextField(
-            hintText: 'Search',
-            onChanged: cubit.searchFriends,
-            prefix: Padding(
-              padding: EdgeInsets.only(left: 16.w, right: 12.w),
-              child: SvgPicture.asset(
-                'assets/svgs/search.svg',
-                width: 24.r,
-                height: 24.r,
-                colorFilter:
-                    ColorFilter.mode(colors.textSecondary, BlendMode.srcIn),
-              ),
-            ),
-          ),
+          SearchTextField(onChanged: cubit.searchFriends),
           SizedBox(height: 16.h),
           const Expanded(child: _PickerBody()),
           SizedBox(height: 16.h),

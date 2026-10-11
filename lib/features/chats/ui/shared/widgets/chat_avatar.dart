@@ -7,18 +7,25 @@ class ChatAvatar extends StatelessWidget {
   final String name;
   final String? imageUrl;
   final double size;
+  // Defaults to the list-size style; large avatars pass a bigger one.
+  final TextStyle? initialsStyle;
 
   const ChatAvatar({
     super.key,
     required this.name,
     required this.size,
     this.imageUrl,
+    this.initialsStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     final url = imageUrl;
-    final fallback = _InitialsAvatar(name: name, size: size);
+    final fallback = _InitialsAvatar(
+      name: name,
+      size: size,
+      style: initialsStyle,
+    );
     if (url == null) return fallback;
 
     return ClipOval(
@@ -37,8 +44,9 @@ class ChatAvatar extends StatelessWidget {
 class _InitialsAvatar extends StatelessWidget {
   final String name;
   final double size;
+  final TextStyle? style;
 
-  const _InitialsAvatar({required this.name, required this.size});
+  const _InitialsAvatar({required this.name, required this.size, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +69,8 @@ class _InitialsAvatar extends StatelessWidget {
       ),
       child: Text(
         initials,
-        style: textStyle.font16Bold.copyWith(color: colors.textOnAccent),
+        style: (style ?? textStyle.font16Bold)
+            .copyWith(color: colors.textOnAccent),
       ),
     );
   }

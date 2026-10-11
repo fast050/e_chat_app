@@ -27,6 +27,20 @@ void main() {
     });
 
     expect(message.text, '');
+    expect(message.imageUrl, isNull);
+  });
+
+  test('fromJson and toJson carry the image url', () {
+    final message = Message.fromJson({
+      'id': 'm3',
+      'chat_id': 'c1',
+      'sender_id': 'u1',
+      'created_at': '2026-09-27T10:10:00.000',
+      'image_url': 'https://example.com/photo.png',
+    });
+
+    expect(message.imageUrl, 'https://example.com/photo.png');
+    expect(message.toJson()['image_url'], 'https://example.com/photo.png');
   });
 
   test('toJson leaves out the server-generated id and created_at', () {

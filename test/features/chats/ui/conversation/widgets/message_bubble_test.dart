@@ -36,4 +36,37 @@ void main() {
       Alignment.centerLeft,
     );
   });
+
+  Color? fillOf(WidgetTester tester) {
+    final container = tester.widget<Container>(
+      find.descendant(
+        of: find.byType(MessageBubble),
+        matching: find.byType(Container),
+      ),
+    );
+    return (container.decoration! as BoxDecoration).color;
+  }
+
+  testWidgets('uses the custom chat color when one is given', (tester) async {
+    await tester.pumpApp(
+      const MessageBubble(
+        text: 'Hi!',
+        timeLabel: '10:10',
+        isMine: true,
+        bubbleColor: Color(0xFF9655FF),
+      ),
+    );
+
+    expect(fillOf(tester), const Color(0xFF9655FF));
+  });
+
+  testWidgets('falls back to the theme color without a custom one',
+      (tester) async {
+    await tester.pumpApp(
+      const MessageBubble(text: 'Hi!', timeLabel: '10:10', isMine: true),
+    );
+
+    final context = tester.element(find.byType(MessageBubble));
+    expect(fillOf(tester), Theme.of(context).colorScheme.primary);
+  });
 }
